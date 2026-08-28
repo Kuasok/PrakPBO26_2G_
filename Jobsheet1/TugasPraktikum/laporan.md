@@ -22,4 +22,3 @@ Java tidak mendukung satu class mewarisi dua class sekaligus. Karena itu, satu c
 
 Class `TugasPraktikumDemo` berisi method `main()`. Di dalamnya dibuat satu objek untuk setiap class dan seluruh method objek dipanggil.
 
-```
