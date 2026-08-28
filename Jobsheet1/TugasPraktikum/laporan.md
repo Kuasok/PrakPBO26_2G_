@@ -18,7 +18,5 @@ Class `MejaRuangTamu` dan `MejaBelajar` mewarisi class `Meja` menggunakan kata k
 
 Java tidak mendukung satu class mewarisi dua class sekaligus. Karena itu, satu class induk bersama (`Meja`) digunakan untuk kedua class turunan tersebut.
 
-## 3. Class Demo
 
-Class `TugasPraktikumDemo` berisi method `main()`. Di dalamnya dibuat satu objek untuk setiap class dan seluruh method objek dipanggil.
 
