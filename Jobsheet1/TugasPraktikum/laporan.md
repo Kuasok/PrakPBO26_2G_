@@ -1,22 +1,30 @@
 # Tugas Praktikum PBO
 
-## Objek yang Diamati
+## 1. Objek yang Diamati
 
-Objek yang digunakan adalah kulkas, kursi, meja ruang tamu, dan meja belajar. Meja ruang tamu serta meja belajar memiliki konsep pewarisan karena keduanya merupakan jenis dari objek meja.
+Objek yang digunakan adalah televisi, radio, lampu, dan jam dinding. Televisi dan radio memiliki konsep pewarisan karena keduanya termasuk perangkat elektronik.
 
-| Objek         | Atribut                       | Method                                                 |
-|---------------|-------------------------------|--------------------------------------------------------|
-| Kulkas        | `merek`, `suhu`               | `dinginkan()`, `bukaPintu()`, `cetakInformasi()`       |
-| Kursi         | `bahan`, `warna`              | `duduk()`, `angkat()`, `cetakInformasi()`              |
-| Meja          | `bahan`, `warna`              | `gunakan()`, `pindahkan()`, `cetakInformasi()`         |
-| MejaRuangTamu | `jumlahKaki`, `memilikiLaci`  | `letakkanDekorasi()`, `bukaLaci()`, `cetakInformasi()` |
-| MejaBelajar   | `jumlahLaci`, `memilikiLampu` | `belajar()`, `nyalakanLampu()`, `cetakInformasi()`     |
+| Objek | Atribut | Method |
+|---|---|---|
+| Elektronik | `merek`, `daya` | `nyalakan()`, `matikan()`, `cetakInformasi()` |
+| Televisi | `ukuranLayar`, `volume` | `gantiSaluran()`, `aturVolume()`, `cetakInformasi()` |
+| Radio | `frekuensi`, `menggunakanBaterai` | `cariFrekuensi()`, `putarMusik()`, `cetakInformasi()` |
+| Lampu | `jenis`, `tingkatKecerahan` | `nyalakan()`, `aturKecerahan()`, `cetakInformasi()` |
+| JamDinding | `bentuk`, `warna` | `tunjukkanWaktu()`, `gantiBaterai()`, `cetakInformasi()` |
 
-## Penerapan Inheritance
+## 2. Penerapan Inheritance
 
-Class `MejaRuangTamu` dan `MejaBelajar` mewarisi class `Meja` menggunakan kata kunci `extends`. Dengan demikian, keduanya dapat menggunakan atribut dan method umum dari class `Meja`, sekaligus memiliki atribut dan method khusus masing-masing.
+Class `Televisi` dan `Radio` mewarisi class `Elektronik` dengan kata kunci `extends`. Atribut dan method umum diletakkan di class `Elektronik`, sedangkan atribut dan method khusus berada pada class turunannya.
 
-Java tidak mendukung satu class mewarisi dua class sekaligus. Karena itu, satu class induk bersama (`Meja`) digunakan untuk kedua class turunan tersebut.
+Java tidak mendukung satu class mewarisi dua class sekaligus. Karena itu, satu class induk bersama (`Elektronik`) digunakan untuk kedua class turunan tersebut.
 
+## 3. Class Demo
 
+Class `TugasPraktikumDemo` berisi `main()`, membuat satu objek untuk setiap objek pengamatan, dan memanggil seluruh method objek tersebut.
 
+## 4. Cara Menjalankan
+
+```bash
+javac *.java
+java TugasPraktikumDemo
+```
