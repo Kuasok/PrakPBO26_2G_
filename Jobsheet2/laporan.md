@@ -45,12 +45,12 @@ Satu class dapat digunakan untuk membuat banyak objek. Java juga memungkinkan be
 
 ## 3.1 Langkah 1 – Membuat Project
 
-Project dibuat dengan nama `oop-praktikum`. Seluruh class ditempatkan pada package `id.ac.polinema`.
+Seluruh class ditempatkan pada package `id.ac.polinema`.
 
 Struktur project:
 
 ```text
-oop-praktikum
+Jobsheet2
 └── src
     └── id
         └── ac
