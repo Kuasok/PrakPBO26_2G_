@@ -431,9 +431,3 @@ Objek adalah instance sebenarnya yang dibuat dari sebuah class dan berada di mem
 Constructor dijalankan ketika sebuah object dibuat menggunakan keyword `new`. Constructor dijalankan sebagai bagian dari proses pembuatan object dan digunakan untuk melakukan inisialisasi awal object tersebut.
 
 ---
-
-# 5. Kesimpulan
-
-Praktikum Pertemuan 2 memperkenalkan penerapan class dan object pada Java melalui class `Rectangle` dan `Student`. Dari percobaan yang dilakukan dapat dipahami penggunaan atribut, method, constructor, keyword `this`, reference, aliasing, `null`, serta array of objects.
-
-Selain itu, tugas mandiri `Circle` menunjukkan bahwa sebuah class dapat memiliki atribut dan method yang digunakan untuk melakukan perhitungan berdasarkan data yang dimiliki oleh object.
