@@ -208,7 +208,38 @@ Ketika kontak masih OFF, percobaan menambah kecepatan menghasilkan peringatan. K
 
 ---
 
-## 3.3 Percobaan 3 – Getter dan Setter
+## 3.3 Pertanyaan – Percobaan 1 dan 2
+
+### 3.3.1 Pada class MotorDemo, saat kita menambah kecepatan untuk pertama kalinya, mengapa muncul peringatan "Kecepatan tidak bisa bertambah karena Mesin Off!"?
+
+Karena pada saat percobaan pertama, method `tambahKecepatan()` dipanggil sebelum method `nyalakanMesin()`. Di dalam method `tambahKecepatan()` terdapat pengecekan `if (!kontakOn)`, sehingga ketika `kontakOn` masih `false` (mesin belum menyala), peringatan akan muncul dan kecepatan tidak bertambah.
+
+### 3.3.2 Mengapa atribut kecepatan dan kontakOn diset private?
+
+Atribut `kecepatan` dan `kontakOn` diset `private` agar tidak dapat diakses atau diubah secara langsung dari luar class. Hal ini menerapkan konsep enkapsulasi (*information hiding*) sehingga perubahan terhadap atribut hanya dapat dilakukan melalui method yang telah disediakan (`nyalakanMesin()`, `matikanMesin()`, `tambahKecepatan()`, `kurangiKecepatan()`). Dengan demikian, logika bisnis seperti pengecekan kondisi mesin sebelum menambah kecepatan dapat diterapkan.
+
+### 3.3.3 Ubah class Motor sehingga kecepatan maksimalnya adalah 100!
+
+Pada method `tambahKecepatan()`, ditambahkan pengecekan agar kecepatan tidak melebihi 100:
+
+```java
+public void tambahKecepatan(int tambah) {
+    if (!kontakOn) {
+        System.out.println("Kecepatan tidak bisa bertambah karena Mesin Off!");
+        return;
+    }
+    kecepatan += tambah;
+    if (kecepatan > 100) {
+        kecepatan = 100;
+    }
+}
+```
+
+Jika hasil penambahan kecepatan melebihi 100, maka nilai `kecepatan` akan dibatasi menjadi 100.
+
+---
+
+## 3.4 Percobaan 3 – Getter dan Setter
 
 Pada percobaan ini dibuat class `Anggota` untuk sistem informasi koperasi. Atribut `nama`, `alamat`, dan `simpanan` dibuat `private`. Atribut `simpanan` tidak memiliki setter karena hanya berubah melalui method `setor()` dan `pinjam()`.
 
@@ -340,7 +371,51 @@ Simpanan: Rp 200000.0
 
 ---
 
-## 3.4 Percobaan 4 – Konstruktor dan Instansiasi
+## 3.5 Pertanyaan – Percobaan 3 dan 4
+
+### 3.5.1 Apa yang dimaksud getter dan setter?
+
+**Getter** adalah method *public* yang memiliki tipe data return, berfungsi untuk mendapatkan (membaca) nilai dari atribut `private`. **Setter** adalah method *public* yang tidak memiliki tipe data return, berfungsi untuk mengubah (menulis) nilai dari atribut `private`.
+
+### 3.5.2 Apa kegunaan dari method `getSimpanan()`?
+
+Method `getSimpanan()` digunakan untuk membaca nilai atribut `simpanan` yang bersifat `private`. Karena atribut `simpanan` tidak memiliki setter, nilai simpanan hanya dapat dibaca dari luar class melalui method ini dan diubah melalui method `setor()` dan `pinjam()`.
+
+### 3.5.3 Method apa yang digunakan untuk menambah saldo?
+
+Method yang digunakan untuk menambah saldo adalah `setor(double jumlah)`.
+
+### 3.5.4 Apa yang dimaksud konstruktor?
+
+Konstruktor adalah blok kode yang dijalankan secara otomatis ketika sebuah object dibuat menggunakan keyword `new`. Konstruktor digunakan untuk melakukan inisialisasi awal pada atribut object.
+
+### 3.5.5 Sebutkan aturan dalam membuat konstruktor!
+
+1. Nama konstruktor harus sama dengan nama class.
+2. Konstruktor tidak memiliki tipe data return.
+3. Konstruktor tidak boleh menggunakan modifier `abstract`, `static`, `final`, dan `synchronized`.
+
+### 3.5.6 Apakah boleh konstruktor bertipe private?
+
+Ya, boleh. Konstruktor `private` digunakan untuk membatasi akses instansiasi dari luar class, misalnya pada pola *Singleton* atau *Utility Class* yang hanya berisi method *static*.
+
+### 3.5.7 Kapan menggunakan konstruktor dengan passing parameter?
+
+Konstruktor dengan *passing parameter* digunakan ketika object membutuhkan nilai awal yang spesifik saat pertama kali dibuat, misalnya `nama` dan `alamat` pada class `Anggota`. Jika suatu atribut tidak memerlukan nilai spesifik dari luar (misalnya `simpanan` yang selalu diinisialisasi `0`), maka atribut tersebut tidak perlu dijadikan parameter konstruktor.
+
+### 3.5.8 Apa perbedaan inisialisasi atribut dan instansiasi atribut?
+
+- **Inisialisasi atribut** adalah pemberian nilai awal pada atribut saat deklarasi, misalnya `private int simpanan = 0;`.
+- **Instansiasi atribut** adalah pembuatan object dari sebuah class menggunakan keyword `new`, misalnya `Anggota a = new Anggota("Budi", "Jl. Merdeka");`.
+
+### 3.5.9 Apa perbedaan inisialisasi method dan instansiasi method?
+
+- **Inisialisasi method** adalah pendefinisian isi dari sebuah method (menuliskan kode di dalam method).
+- **Instansiasi method** adalah pemanggilan method melalui object, misalnya `anggota.setor(50000);`.
+
+---
+
+## 3.6 Percobaan 4 – Konstruktor dan Instansiasi
 
 Pada percobaan ini, konstruktor dengan parameter ditambahkan pada class `Anggota` sehingga atribut `nama` dan `alamat` langsung terisi ketika object dibuat. Atribut `simpanan` diinisialisasi dengan nilai default `0` karena tidak memerlukan nilai spesifik dari luar.
 
@@ -726,69 +801,7 @@ Pada tiket 2, harga dasar yang dimasukkan `-10000` (negatif) secara otomatis dis
 
 ---
 
-# 5. Jawaban Pertanyaan
-
-## 5.1 Apa yang dimaksud getter dan setter?
-
-**Getter** adalah method *public* yang memiliki tipe data return, berfungsi untuk mendapatkan (membaca) nilai dari atribut `private`.
-
-**Setter** adalah method *public* yang tidak memiliki tipe data return, berfungsi untuk mengubah (menulis) nilai dari atribut `private`.
-
----
-
-## 5.2 Apa kegunaan dari method `getSimpanan()`?
-
-Method `getSimpanan()` digunakan untuk membaca nilai atribut `simpanan` yang bersifat `private`. Karena atribut `simpanan` tidak memiliki setter, nilai simpanan hanya dapat dibaca dari luar class melalui method ini dan diubah melalui method `setor()` dan `pinjam()`.
-
----
-
-## 5.3 Method apa yang digunakan untuk menambah saldo?
-
-Method yang digunakan untuk menambah saldo adalah `setor(double jumlah)`.
-
----
-
-## 5.4 Apa yang dimaksud konstruktor?
-
-Konstruktor adalah blok kode yang dijalankan secara otomatis ketika sebuah object dibuat menggunakan keyword `new`. Konstruktor digunakan untuk melakukan inisialisasi awal pada atribut object.
-
----
-
-## 5.5 Sebutkan aturan dalam membuat konstruktor!
-
-1. Nama konstruktor harus sama dengan nama class.
-2. Konstruktor tidak memiliki tipe data return.
-3. Konstruktor tidak boleh menggunakan modifier `abstract`, `static`, `final`, dan `synchronized`.
-
----
-
-## 5.6 Apakah boleh konstruktor bertipe private?
-
-Ya, boleh. Konstruktor `private` digunakan untuk membatasi akses instansiasi dari luar class, misalnya pada pola *Singleton* atau *Utility Class* yang hanya berisi method *static*.
-
----
-
-## 5.7 Kapan menggunakan konstruktor dengan passing parameter?
-
-Konstruktor dengan *passing parameter* digunakan ketika object membutuhkan nilai awal yang spesifik saat pertama kali dibuat, misalnya `nama` dan `alamat` pada class `Anggota`. Jika suatu atribut tidak memerlukan nilai spesifik dari luar (misalnya `simpanan` yang selalu diinisialisasi `0`), maka atribut tersebut tidak perlu dijadikan parameter konstruktor.
-
----
-
-## 5.8 Apa perbedaan inisialisasi atribut dan instansiasi atribut?
-
-- **Inisialisasi atribut** adalah pemberian nilai awal pada atribut saat deklarasi, misalnya `private int simpanan = 0;`.
-- **Instansiasi atribut** adalah pembuatan object dari sebuah class menggunakan keyword `new`, misalnya `Anggota a = new Anggota("Budi", "Jl. Merdeka");`.
-
----
-
-## 5.9 Apa perbedaan inisialisasi method dan instansiasi method?
-
-- **Inisialisasi method** adalah pendefinisian isi dari sebuah method (menuliskan kode di dalam method).
-- **Instansiasi method** adalah pemanggilan method melalui object, misalnya `anggota.setor(50000);`.
-
----
-
-# 6. Kesimpulan
+# 5. Kesimpulan
 
 Berdasarkan praktikum Jobsheet 3, telah dipelajari konsep enkapsulasi pada Pemrograman Berorientasi Objek. Enkapsulasi diterapkan dengan menggunakan *access modifier* `private` pada atribut sehingga data tidak dapat diakses atau diubah secara langsung dari luar class. Akses terhadap atribut dilakukan melalui method *getter* (untuk membaca) dan *setter* (untuk mengubah).
 
