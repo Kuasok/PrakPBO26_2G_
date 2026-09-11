@@ -1,6 +1,0 @@
-Film: Avengers: Endgame
-Harga Tiket: 35000.0
-Status Lunas? false
-
-Memproses pembayaran...
-Status Lunas Terbaru? true
