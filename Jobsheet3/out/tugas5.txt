@@ -1,0 +1,8 @@
+Berat muatan saat ini: 4000.0 kg
+
+Mencoba menurunkan muatan 2.500 kg...
+Maaf, demi keselamatan, pembongkaran muatan satu kali jalan tidak boleh melebihi 50% dari muatan saat ini!
+Berat muatan saat ini: 4000.0 kg
+
+Menurunkan muatan 2.000 kg...
+Berat muatan saat ini: 2000.0 kg

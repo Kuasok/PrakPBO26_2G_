@@ -1,0 +1,2 @@
+Masukkan nomor resi: Masukkan nama pemilik: Masukkan kapasitas maksimal (kg): Masukkan berat barang yang ditambahkan (kg): Berat muatan saat ini: 4000.0 kg
+Masukkan berat barang yang dibongkar (kg): Berat muatan saat ini: 2000.0 kg

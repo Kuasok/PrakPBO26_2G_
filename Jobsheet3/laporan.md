@@ -9,54 +9,42 @@
 
 ## 1. Tujuan Praktikum
 
-Setelah melakukan praktikum ini, mahasiswa mampu:
+Setelah melakukan percobaan pada modul ini, mahasiswa memahami konsep:
 
-1. Memahami konsep enkapsulasi (*information hiding*) pada PBO.
-2. Menggunakan *access modifier* (`private`, `protected`, `public`, default) untuk mengontrol akses atribut dan method.
-3. Membuat dan menggunakan *getter* serta *setter*.
-4. Membuat konstruktor dengan parameter untuk inisialisasi object.
-5. Memahami notasi pada UML Class Diagram.
-
----
+1. Konstruktor.
+2. Access Modifier.
+3. Atribut/method pada class.
+4. Instansiasi atribut/method.
+5. Setter dan getter.
+6. Notasi pada UML Class Diagram.
 
 ## 2. Pendahuluan
 
-### 2.1 Enkapsulasi
+Enkapsulasi disebut juga *information-hiding*. Dalam berinteraksi dengan objek, pengguna tidak harus mengetahui kompleksitas proses internal objek. Pada Java, konsep ini diterapkan antara lain dengan menyembunyikan atribut menggunakan `private` dan menyediakan method untuk mengakses atau memanipulasinya.
 
-Enkapsulasi disebut juga *information-hiding*. Dalam berinteraksi dengan objek, seringkali kita tidak perlu mengetahui kompleksitas yang ada di dalamnya. Contohnya, ketika mengganti gear pada sepeda, kita hanya menekan tuas gear tanpa perlu mengetahui bagaimana gear berpindah secara teknis.
+### 2.1 Access Modifier
 
-Konsep ini diterapkan dengan cara:
-1. Menyembunyikan atribut internal dari pengguna (*class* lain) menggunakan modifier `private`.
-2. Menyediakan method khusus (*getter* dan *setter*) untuk mengakses dan memanipulasi atribut.
-
-### 2.2 Access Modifier
-
-Terdapat 4 *access modifier* di Java:
-
-| Modifier | Within Class | Within Package | Outside Package (Subclass) | Outside Package |
+| Modifier | Within Class | Within Package | Outside Package by Subclass | Outside Package |
 |---|---|---|---|---|
-| `private` | ✓ | ✗ | ✗ | ✗ |
-| default | ✓ | ✓ | ✗ | ✗ |
-| `protected` | ✓ | ✓ | ✓ | ✗ |
-| `public` | ✓ | ✓ | ✓ | ✓ |
+| `private` | Y | N | N | N |
+| default | Y | Y | N | N |
+| `protected` | Y | Y | Y | N |
+| `public` | Y | Y | Y | Y |
 
-Notasi pada UML Class Diagram:
-- `+` → public
-- `#` → protected
-- `-` → private
-- `~` → default
+Notasi UML:
 
-### 2.3 Getter dan Setter
+- `+` = public
+- `#` = protected
+- `-` = private
+- `~` = default
 
-- **Getter** adalah method *public* yang memiliki tipe data return, berfungsi untuk mendapatkan nilai dari atribut `private`.
-- **Setter** adalah method *public* yang tidak memiliki tipe data return, berfungsi untuk memanipulasi nilai dari atribut `private`.
+### 2.2 Getter dan Setter
 
-### 2.4 Konstruktor
+Getter merupakan method `public` yang memiliki nilai return untuk mendapatkan nilai atribut `private`. Setter merupakan method `public` tanpa return untuk memanipulasi nilai atribut `private`.
 
-Konstruktor adalah blok kode yang dijalankan ketika object dibuat menggunakan keyword `new`. Aturan pembuatan konstruktor:
-1. Nama konstruktor harus sama dengan nama class.
-2. Konstruktor tidak memiliki tipe data return.
-3. Konstruktor tidak boleh menggunakan modifier `abstract`, `static`, `final`, dan `synchronized`.
+### 2.3 Konstruktor
+
+Konstruktor dijalankan ketika objek dibuat dengan `new`. Nama konstruktor harus sama dengan nama class dan konstruktor tidak memiliki tipe return. Konstruktor tidak boleh menggunakan modifier `abstract`, `static`, `final`, dan `synchronized`.
 
 ---
 
@@ -64,486 +52,475 @@ Konstruktor adalah blok kode yang dijalankan ketika object dibuat menggunakan ke
 
 ## 3.1 Percobaan 1 – Enkapsulasi
 
-Percobaan pertama mendemonstrasikan masalah ketika atribut tidak dilindungi dengan *access modifier*. Atribut `kecepatan` dan `kontakOn` pada class `Motor` dapat diakses dan diubah secara langsung dari luar class, sehingga kecepatan bisa berubah tanpa menyalakan mesin terlebih dahulu.
+Pada tahap pertama atribut motor masih dapat diakses langsung dari luar class. Hal ini menunjukkan masalah information hiding karena `kecepatan` dapat diubah walaupun kontak motor masih OFF.
 
-### UML Class Diagram
+### `Motor.java`
+
+```java
+package motorencapsulation;
+
+public class Motor {
+    public int kecepatan = 0;
+    public boolean kontakOn = false;
+
+    public void printStatus(){
+        if (kontakOn == true){
+            System.out.println("Kontak On");
+        }
+        else{
+            System.out.println("Kontak Off");
+        }
+        System.out.println("Kecepatan " + kecepatan+"\n");
+    }
+}
+```
+
+### `MotorDemo.java`
+
+```java
+package motorencapsulation;
+
+public class MotorDemo {
+    public static void main(String[] args) {
+        Motor motor = new Motor();
+        motor.printStatus();
+        motor.kecepatan = 50;
+        motor.printStatus();
+    }
+}
+```
+
+### Output
 
 ```text
-+-------------------+
-|      Motor        |
-+-------------------+
-| - kecepatan       |
-| - kontakOn        |
-+-------------------+
-| + printStatus()   |
-+-------------------+
+Kontak Off
+Kecepatan 0
+
+Kontak Off
+Kecepatan 50
+
 ```
+
+**Analisis:** Kecepatan dapat berubah langsung menjadi 50 meskipun kontak masih OFF. Inilah masalah yang kemudian diperbaiki pada Percobaan 2.
 
 ---
 
 ## 3.2 Percobaan 2 – Access Modifier
 
-Pada percobaan ini, atribut `kecepatan` dan `kontakOn` diubah menjadi `private`. Ditambahkan method `nyalakanMesin()`, `matikanMesin()`, `tambahKecepatan()`, dan `kurangiKecepatan()` untuk mengontrol akses terhadap atribut.
+Atribut `kecepatan` dan `kontakOn` diubah menjadi `private`. Akses terhadap keduanya dikendalikan melalui method `nyalakanMesin()`, `matikanMesin()`, `tambahKecepatan()`, `kurangiKecepatan()`, dan `printStatus()`.
 
-### UML Class Diagram
-
-```text
-+-----------------------------------+
-|             Motor                 |
-+-----------------------------------+
-| - kecepatan: int                  |
-| - kontakOn: boolean               |
-+-----------------------------------+
-| + nyalakanMesin(): void           |
-| + matikanMesin(): void            |
-| + tambahKecepatan(tambah): void   |
-| + kurangiKecepatan(kurang): void  |
-| + getKecepatan(): int             |
-| + isKontakOn(): boolean           |
-| + printStatus(): void             |
-+-----------------------------------+
-```
-
-### Kode Class `Motor`
+### `Motor.java`
 
 ```java
-package id.ac.polinema;
+package motorencapsulation;
 
 public class Motor {
-    private int kecepatan;
-    private boolean kontakOn;
+    private int kecepatan = 0;
+    private boolean kontakOn = false;
 
-    public void nyalakanMesin() {
+    public void nyalakanMesin(){
         kontakOn = true;
-        System.out.println("Mesin dinyalakan.");
     }
 
-    public void matikanMesin() {
+    public void matikanMesin(){
         kontakOn = false;
         kecepatan = 0;
-        System.out.println("Mesin dimatikan.");
     }
 
-    public void tambahKecepatan(int tambah) {
-        if (!kontakOn) {
-            System.out.println("Kecepatan tidak bisa bertambah karena Mesin Off!");
-            return;
+    public void tambahKecepatan(){
+        if (kontakOn == true){
+            kecepatan += 5;
         }
-        kecepatan += tambah;
-        if (kecepatan > 100) {
-            kecepatan = 100;
+        else{
+            System.out.println("Kecepatan tidak bisa bertambah karena Mesin Off!\n");
         }
     }
 
-    public void kurangiKecepatan(int kurang) {
-        kecepatan -= kurang;
-        if (kecepatan < 0) {
-            kecepatan = 0;
+    public void kurangiKecepatan(){
+        if (kontakOn == true){
+            kecepatan -= 5;
+        }
+        else{
+            System.out.println("Kecepatan tidak bisa berkurang karena Mesin Off!\n");
         }
     }
 
-    public int getKecepatan() {
-        return kecepatan;
-    }
-
-    public boolean isKontakOn() {
-        return kontakOn;
-    }
-
-    public void printStatus() {
-        System.out.println("Status Motor:");
-        System.out.println("Kontak : " + (kontakOn ? "ON" : "OFF"));
-        System.out.println("Kecepatan : " + kecepatan + " km/h");
+    public void printStatus(){
+        if (kontakOn == true){
+            System.out.println("Kontak On");
+        }
+        else{
+            System.out.println("Kontak Off");
+        }
+        System.out.println("Kecepatan " + kecepatan+"\n");
     }
 }
 ```
 
-### Kode Class `MotorDemo`
+### `MotorDemo.java`
 
 ```java
-package id.ac.polinema;
+package motorencapsulation;
 
 public class MotorDemo {
     public static void main(String[] args) {
         Motor motor = new Motor();
-
         motor.printStatus();
-
-        motor.tambahKecepatan(50);
-        System.out.println();
+        motor.tambahKecepatan();
 
         motor.nyalakanMesin();
-        motor.tambahKecepatan(30);
-        motor.tambahKecepatan(20);
-        motor.kurangiKecepatan(10);
-        System.out.println();
-
         motor.printStatus();
+
+        motor.tambahKecepatan();
+        motor.printStatus();
+
+        motor.tambahKecepatan();
+        motor.printStatus();
+
+        motor.tambahKecepatan();
+        motor.printStatus();
+
         motor.matikanMesin();
         motor.printStatus();
     }
 }
 ```
 
-### Verifikasi Hasil Percobaan 2
+### Output
 
 ```text
-Status Motor:
-Kontak : OFF
-Kecepatan : 0 km/h
+Kontak Off
+Kecepatan 0
+
 Kecepatan tidak bisa bertambah karena Mesin Off!
 
-Mesin dinyalakan.
+Kontak On
+Kecepatan 0
 
-Status Motor:
-Kontak : ON
-Kecepatan : 40 km/h
-Mesin dimatikan.
-Status Motor:
-Kontak : OFF
-Kecepatan : 0 km/h
+Kontak On
+Kecepatan 5
+
+Kontak On
+Kecepatan 10
+
+Kontak On
+Kecepatan 15
+
+Kontak Off
+Kecepatan 0
+
 ```
 
-Ketika kontak masih OFF, percobaan menambah kecepatan menghasilkan peringatan. Kecepatan hanya dapat ditambah setelah mesin dinyalakan.
+### Pertanyaan
 
----
+**1. Mengapa saat menambah kecepatan pertama kali muncul peringatan Mesin Off?**  
+Karena `tambahKecepatan()` dipanggil sebelum `nyalakanMesin()`, sehingga `kontakOn` masih bernilai `false`. Method kemudian menjalankan bagian `else` dan menampilkan peringatan.
 
-## 3.3 Pertanyaan – Percobaan 1 dan 2
+**2. Mengapa atribut `kecepatan` dan `kontakOn` diset `private`?**  
+Agar atribut tidak dapat diubah langsung dari luar class. Dengan demikian perubahan state motor harus melalui method yang telah disediakan sehingga aturan penggunaan motor dapat dikontrol.
 
-### 3.3.1 Pada class MotorDemo, saat kita menambah kecepatan untuk pertama kalinya, mengapa muncul peringatan "Kecepatan tidak bisa bertambah karena Mesin Off!"?
+**3. Ubah class Motor sehingga kecepatan maksimal 100!**
 
-Karena pada saat percobaan pertama, method `tambahKecepatan()` dipanggil sebelum method `nyalakanMesin()`. Di dalam method `tambahKecepatan()` terdapat pengecekan `if (!kontakOn)`, sehingga ketika `kontakOn` masih `false` (mesin belum menyala), peringatan akan muncul dan kecepatan tidak bertambah.
-
-### 3.3.2 Mengapa atribut kecepatan dan kontakOn diset private?
-
-Atribut `kecepatan` dan `kontakOn` diset `private` agar tidak dapat diakses atau diubah secara langsung dari luar class. Hal ini menerapkan konsep enkapsulasi (*information hiding*) sehingga perubahan terhadap atribut hanya dapat dilakukan melalui method yang telah disediakan (`nyalakanMesin()`, `matikanMesin()`, `tambahKecepatan()`, `kurangiKecepatan()`). Dengan demikian, logika bisnis seperti pengecekan kondisi mesin sebelum menambah kecepatan dapat diterapkan.
-
-### 3.3.3 Ubah class Motor sehingga kecepatan maksimalnya adalah 100!
-
-Pada method `tambahKecepatan()`, ditambahkan pengecekan agar kecepatan tidak melebihi 100:
+Tambahkan validasi setelah penambahan kecepatan:
 
 ```java
-public void tambahKecepatan(int tambah) {
-    if (!kontakOn) {
-        System.out.println("Kecepatan tidak bisa bertambah karena Mesin Off!");
-        return;
+public void tambahKecepatan(){
+    if (kontakOn == true){
+        kecepatan += 5;
+        if (kecepatan > 100){
+            kecepatan = 100;
+        }
     }
-    kecepatan += tambah;
-    if (kecepatan > 100) {
-        kecepatan = 100;
+    else{
+        System.out.println("Kecepatan tidak bisa bertambah karena Mesin Off!\n");
     }
 }
 ```
 
-Jika hasil penambahan kecepatan melebihi 100, maka nilai `kecepatan` akan dibatasi menjadi 100.
-
 ---
 
-## 3.4 Percobaan 3 – Getter dan Setter
+## 3.3 Percobaan 3 – Getter dan Setter
 
-Pada percobaan ini dibuat class `Anggota` untuk sistem informasi koperasi. Atribut `nama`, `alamat`, dan `simpanan` dibuat `private`. Atribut `simpanan` tidak memiliki setter karena hanya berubah melalui method `setor()` dan `pinjam()`.
-
-### UML Class Diagram
-
-```text
-+-----------------------------------+
-|            Anggota                |
-+-----------------------------------+
-| - nama: String                    |
-| - alamat: String                  |
-| - simpanan: double                |
-+-----------------------------------+
-| + Anggota(nama, alamat)           |
-| + getNama(): String               |
-| + setNama(nama): void             |
-| + getAlamat(): String             |
-| + setAlamat(alamat): void         |
-| + getSimpanan(): double           |
-| + setor(jumlah): void             |
-| + pinjam(jumlah): void            |
-+-----------------------------------+
-```
-
-### Kode Class `Anggota`
+### `Anggota.java`
 
 ```java
-package id.ac.polinema;
+package koperasigettersetter;
 
 public class Anggota {
     private String nama;
     private String alamat;
-    private double simpanan;
+    private float simpanan;
 
-    public Anggota(String nama, String alamat) {
+    public void setNama(String nama){
+        this.nama = nama;
+    }
+
+    public void setAlamat(String alamat){
+        this.alamat = alamat;
+    }
+
+    public String getNama(){
+        return nama;
+    }
+
+    public String getAlamat(){
+        return alamat;
+    }
+
+    public float getSimpanan(){
+        return simpanan;
+    }
+
+    public void setor(float uang){
+        simpanan += uang;
+    }
+
+    public void pinjam(float uang){
+        simpanan -= uang;
+    }
+}
+```
+
+### `KoperasiDemo.java`
+
+```java
+package koperasigettersetter;
+
+public class KoperasiDemo {
+    public static void main(String[] args) {
+        Anggota anggota1 = new Anggota();
+        anggota1.setNama("Iwan Setiawan");
+        anggota1.setAlamat("Jalan Sukarno Hatta no 10");
+        anggota1.setor(100000);
+        System.out.println("Simpanan " + anggota1.getNama() + " : Rp " + anggota1.getSimpanan());
+
+        anggota1.pinjam(5000);
+        System.out.println("Simpanan " + anggota1.getNama() + " : Rp " + anggota1.getSimpanan());
+    }
+}
+```
+
+### Output
+
+```text
+Simpanan Iwan Setiawan : Rp 100000.0
+Simpanan Iwan Setiawan : Rp 95000.0
+```
+
+---
+
+## 3.4 Percobaan 4 – Konstruktor, Instansiasi
+
+### Kondisi sebelum konstruktor
+
+Objek `Anggota` dibuat tanpa parameter. Ketika `getNama()` dipanggil sebelum `setNama()`, hasilnya `null` karena atribut `nama` belum diberi nilai.
+
+### `Anggota.java` setelah ditambahkan konstruktor
+
+```java
+package koperasigettersetter;
+
+public class Anggota {
+    private String nama;
+    private String alamat;
+    private float simpanan;
+
+    Anggota(String nama, String alamat){
         this.nama = nama;
         this.alamat = alamat;
         this.simpanan = 0;
     }
 
-    public String getNama() {
-        return nama;
-    }
-
-    public void setNama(String nama) {
+    public void setNama(String nama){
         this.nama = nama;
     }
 
-    public String getAlamat() {
-        return alamat;
-    }
-
-    public void setAlamat(String alamat) {
+    public void setAlamat(String alamat){
         this.alamat = alamat;
     }
 
-    public double getSimpanan() {
+    public String getNama(){
+        return nama;
+    }
+
+    public String getAlamat(){
+        return alamat;
+    }
+
+    public float getSimpanan(){
         return simpanan;
     }
 
-    public void setor(double jumlah) {
-        if (jumlah > 0) {
-            simpanan += jumlah;
-            System.out.println("Setor berhasil. Simpanan sekarang: Rp " + simpanan);
-        } else {
-            System.out.println("Jumlah setor harus lebih dari 0!");
-        }
+    public void setor(float uang){
+        simpanan += uang;
     }
 
-    public void pinjam(double jumlah) {
-        if (jumlah > simpanan) {
-            System.out.println("Pinjaman melebihi simpanan!");
-        } else if (jumlah > 0) {
-            simpanan -= jumlah;
-            System.out.println("Pinjam berhasil. Simpanan sekarang: Rp " + simpanan);
-        } else {
-            System.out.println("Jumlah pinjaman harus lebih dari 0!");
-        }
+    public void pinjam(float uang){
+        simpanan -= uang;
     }
 }
 ```
 
-### Kode Class `KoperasiDemo`
+### `KoperasiDemo.java`
 
 ```java
-package id.ac.polinema;
+package koperasigettersetter;
 
 public class KoperasiDemo {
     public static void main(String[] args) {
-        Anggota anggota1 = new Anggota("Budi", "Jl. Merdeka No. 10");
-        Anggota anggota2 = new Anggota("Siti", "Jl. Sudirman No. 5");
+        Anggota anggota1 = new Anggota("Iwan", "Jalan Mawar");
+        System.out.println("Simpanan " + anggota1.getNama() + " : Rp " + anggota1.getSimpanan());
 
-        System.out.println("=== Anggota 1 ===");
-        System.out.println("Nama   : " + anggota1.getNama());
-        System.out.println("Alamat : " + anggota1.getAlamat());
-        anggota1.setor(500000);
-        anggota1.pinjam(200000);
-        System.out.println("Simpanan: Rp " + anggota1.getSimpanan());
+        anggota1.setNama("Iwan Setiawan");
+        anggota1.setAlamat("Jalan Sukarno Hatta no 10");
+        anggota1.setor(100000);
+        System.out.println("Simpanan " + anggota1.getNama() + " : Rp " + anggota1.getSimpanan());
 
-        System.out.println();
-
-        System.out.println("=== Anggota 2 ===");
-        System.out.println("Nama   : " + anggota2.getNama());
-        System.out.println("Alamat : " + anggota2.getAlamat());
-        anggota2.setor(300000);
-        anggota2.pinjam(100000);
-        System.out.println("Simpanan: Rp " + anggota2.getSimpanan());
+        anggota1.pinjam(5000);
+        System.out.println("Simpanan " + anggota1.getNama() + " : Rp " + anggota1.getSimpanan());
     }
 }
 ```
 
-### Verifikasi Hasil Percobaan 3
+### Output
 
 ```text
-=== Anggota 1 ===
-Nama   : Budi
-Alamat : Jl. Merdeka No. 10
-Setor berhasil. Simpanan sekarang: Rp 500000.0
-Pinjam berhasil. Simpanan sekarang: Rp 300000.0
-Simpanan: Rp 300000.0
-
-=== Anggota 2 ===
-Nama   : Siti
-Alamat : Jl. Sudirman No. 5
-Setor berhasil. Simpanan sekarang: Rp 300000.0
-Pinjam berhasil. Simpanan sekarang: Rp 200000.0
-Simpanan: Rp 200000.0
+Simpanan Iwan : Rp 0.0
+Simpanan Iwan Setiawan : Rp 100000.0
+Simpanan Iwan Setiawan : Rp 95000.0
 ```
 
----
+### Pertanyaan Percobaan 3 dan 4
 
-## 3.5 Pertanyaan – Percobaan 3 dan 4
+**1. Apa yang dimaksud getter dan setter?**  
+Getter adalah method untuk membaca nilai atribut private, sedangkan setter adalah method untuk mengubah nilai atribut private.
 
-### 3.5.1 Apa yang dimaksud getter dan setter?
+**2. Apa kegunaan `getSimpanan()`?**  
+Untuk membaca nilai `simpanan` dari luar class karena atribut tersebut bersifat private.
 
-**Getter** adalah method *public* yang memiliki tipe data return, berfungsi untuk mendapatkan (membaca) nilai dari atribut `private`. **Setter** adalah method *public* yang tidak memiliki tipe data return, berfungsi untuk mengubah (menulis) nilai dari atribut `private`.
+**3. Method apa yang digunakan untuk menambah saldo?**  
+`setor(float uang)`.
 
-### 3.5.2 Apa kegunaan dari method `getSimpanan()`?
+**4. Apa yang dimaksud konstruktor?**  
+Konstruktor adalah method khusus yang dijalankan ketika object dibuat dan digunakan untuk inisialisasi awal object.
 
-Method `getSimpanan()` digunakan untuk membaca nilai atribut `simpanan` yang bersifat `private`. Karena atribut `simpanan` tidak memiliki setter, nilai simpanan hanya dapat dibaca dari luar class melalui method ini dan diubah melalui method `setor()` dan `pinjam()`.
+**5. Sebutkan aturan membuat konstruktor!**
 
-### 3.5.3 Method apa yang digunakan untuk menambah saldo?
+1. Nama konstruktor sama dengan nama class.
+2. Tidak memiliki tipe data return.
+3. Tidak boleh menggunakan `abstract`, `static`, `final`, atau `synchronized`.
 
-Method yang digunakan untuk menambah saldo adalah `setor(double jumlah)`.
+**6. Apakah boleh konstruktor bertipe private?**  
+Boleh. Konstruktor `private` dapat digunakan untuk membatasi pembuatan object dari luar class, misalnya pada Singleton atau Utility Class.
 
-### 3.5.4 Apa yang dimaksud konstruktor?
+**7. Kapan menggunakan konstruktor dengan passing parameter?**  
+Ketika object membutuhkan nilai awal yang spesifik saat dibuat, misalnya `nama` dan `alamat`.
 
-Konstruktor adalah blok kode yang dijalankan secara otomatis ketika sebuah object dibuat menggunakan keyword `new`. Konstruktor digunakan untuk melakukan inisialisasi awal pada atribut object.
+**8. Apa perbedaan inisialisasi atribut dan instansiasi atribut?**  
+Inisialisasi atribut adalah memberikan nilai awal pada atribut, sedangkan instansiasi adalah membuat object dari sebuah class menggunakan `new`. Istilah "instansiasi atribut" sendiri kurang tepat; yang diinstansiasi adalah object/class.
 
-### 3.5.5 Sebutkan aturan dalam membuat konstruktor!
-
-1. Nama konstruktor harus sama dengan nama class.
-2. Konstruktor tidak memiliki tipe data return.
-3. Konstruktor tidak boleh menggunakan modifier `abstract`, `static`, `final`, dan `synchronized`.
-
-### 3.5.6 Apakah boleh konstruktor bertipe private?
-
-Ya, boleh. Konstruktor `private` digunakan untuk membatasi akses instansiasi dari luar class, misalnya pada pola *Singleton* atau *Utility Class* yang hanya berisi method *static*.
-
-### 3.5.7 Kapan menggunakan konstruktor dengan passing parameter?
-
-Konstruktor dengan *passing parameter* digunakan ketika object membutuhkan nilai awal yang spesifik saat pertama kali dibuat, misalnya `nama` dan `alamat` pada class `Anggota`. Jika suatu atribut tidak memerlukan nilai spesifik dari luar (misalnya `simpanan` yang selalu diinisialisasi `0`), maka atribut tersebut tidak perlu dijadikan parameter konstruktor.
-
-### 3.5.8 Apa perbedaan inisialisasi atribut dan instansiasi atribut?
-
-- **Inisialisasi atribut** adalah pemberian nilai awal pada atribut saat deklarasi, misalnya `private int simpanan = 0;`.
-- **Instansiasi atribut** adalah pembuatan object dari sebuah class menggunakan keyword `new`, misalnya `Anggota a = new Anggota("Budi", "Jl. Merdeka");`.
-
-### 3.5.9 Apa perbedaan inisialisasi method dan instansiasi method?
-
-- **Inisialisasi method** adalah pendefinisian isi dari sebuah method (menuliskan kode di dalam method).
-- **Instansiasi method** adalah pemanggilan method melalui object, misalnya `anggota.setor(50000);`.
+**9. Apa perbedaan inisialisasi method dan instansiasi method?**  
+Method tidak diinstansiasi. Method didefinisikan/dideklarasikan di dalam class lalu dipanggil pada object (atau class untuk method static). Instansiasi berlaku pada object, bukan method.
 
 ---
 
-## 3.6 Percobaan 4 – Konstruktor dan Instansiasi
+# 4. Tugas
 
-Pada percobaan ini, konstruktor dengan parameter ditambahkan pada class `Anggota` sehingga atribut `nama` dan `alamat` langsung terisi ketika object dibuat. Atribut `simpanan` diinisialisasi dengan nilai default `0` karena tidak memerlukan nilai spesifik dari luar.
+## 4.1 Tugas 1 – EncapDemo
 
-### Kode `EncapTest`
+### `EncapDemo.java`
 
 ```java
-package id.ac.polinema;
-
-public class EncapTest {
+public class EncapDemo {
     private String name;
-    private String id;
     private int age;
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int newAge) {
-        if (newAge > 30) {
-            age = 30;
-        } else {
-            age = newAge;
-        }
-    }
-
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String newName) {
+    public void setName(String newName)
+    {
         name = newName;
     }
 
-    public String getId() {
-        return id;
+    public int getAge()
+    {
+        return age;
     }
 
-    public void setId(String newId) {
-        id = newId;
+    public void setAge(int newAge)
+    {
+        if(newAge > 30)
+        {
+            age = 30;
+        }
+        else
+        {
+            age = newAge;
+        }
     }
 }
 ```
 
-### Kode `EncapTestDemo`
+### `EncapTest.java`
 
 ```java
-package id.ac.polinema;
-
-public class EncapTestDemo {
-    public static void main(String[] args) {
-        EncapTest encap = new EncapTest();
-
-        encap.setName("Ricky");
-        encap.setId("1234");
+public class EncapTest {
+    public static void main(String args[])
+    {
+        EncapDemo encap = new EncapDemo();
+        encap.setName("James");
         encap.setAge(35);
 
-        System.out.println("Name: " + encap.getName());
-        System.out.println("Id  : " + encap.getId());
+        System.out.println("Name : " + encap.getName());
         System.out.println("Age : " + encap.getAge());
     }
 }
 ```
 
-### Verifikasi Hasil
+### Output
 
 ```text
-Name: Ricky
-Id  : 1234
+Name : James
 Age : 30
 ```
 
-Ketika `setAge(35)` dipanggil, nilai yang tersimpan tetap `30` karena setter membatasi nilai maksimal menjadi 30.
+## 4.2 Tugas 2
 
----
+**Mengapa age diset 35 tetapi hasilnya 30?**  
+Karena `setAge()` memiliki validasi `if(newAge > 30)`. Ketika nilai 35 dikirim, kondisi terpenuhi sehingga atribut `age` justru diisi 30. Dengan demikian nilai maksimum age dibatasi 30.
 
-# 4. Tugas Praktikum
-
-## 4.1 Soal 2 – EncapTest
-
-### Pertanyaan
-Pada class `EncapTest`, saat mengeset `age` dengan nilai 35, namun pada saat ditampilkan ke layar nilainya 30. Jelaskan mengapa.
-
-### Jawaban
-Hal ini terjadi karena pada method `setAge()` terdapat validasi yang membatasi nilai `age` maksimal 30. Ketika parameter yang dikirimkan lebih dari 30, maka nilai `age` akan diset menjadi 30.
+## 4.3 Tugas 3 – Batas age 18 sampai 30
 
 ```java
-public void setAge(int newAge) {
-    if (newAge > 30) {
+public void setAge(int newAge)
+{
+    if(newAge > 30)
+    {
         age = 30;
-    } else {
-        age = newAge;
     }
-}
-```
-
----
-
-## 4.2 Soal 3 – Batas Usia 18-30
-
-### Pertanyaan
-Ubah program agar atribut `age` dapat diberi nilai maksimal 30 dan minimal 18.
-
-### Jawaban
-
-```java
-public void setAge(int newAge) {
-    if (newAge < 18) {
+    else if(newAge < 18)
+    {
         age = 18;
-    } else if (newAge > 30) {
-        age = 30;
-    } else {
+    }
+    else
+    {
         age = newAge;
     }
 }
 ```
 
+Pada folder `src/tugas/1-3-age/` disediakan implementasi lengkap `EncapDemoMinMax.java` dan `EncapTestMinMax.java`.
+
 ---
 
-## 4.3 Soal 4 – Class Kontainer
+## 4.4 Tugas 4 – Sistem Kontainer Logistik
 
-### Pertanyaan
-Buatlah class `Kontainer` pada sistem manajemen pergudangan kargo ekspedisi dengan atribut `nomorResi`, `namaPemilik`, `kapasitasMaksimal`, dan `beratMuatanSaatIni`.
-
-### Kode Class `Kontainer`
+### `Kontainer.java`
 
 ```java
-package id.ac.polinema;
-
 public class Kontainer {
     private String nomorResi;
     private String namaPemilik;
@@ -574,142 +551,146 @@ public class Kontainer {
     }
 
     public void tambahMuatan(double berat) {
-        if (berat < 0) {
-            System.out.println("Berat muatan tidak boleh negatif!");
-            return;
-        }
         if (beratMuatanSaatIni + berat > kapasitasMaksimal) {
-            System.out.println("Muatan melebihi kapasitas maksimal!");
-            return;
+            System.out.println("Maaf, berat muatan melebihi kapasitas maksimal kontainer.");
+        } else {
+            beratMuatanSaatIni += berat;
         }
-        beratMuatanSaatIni += berat;
-        System.out.println("Muatan ditambahkan. Berat sekarang: " + beratMuatanSaatIni + " kg");
     }
 
     public void turunkanMuatan(double berat) {
-        if (berat < 0) {
-            System.out.println("Berat muatan tidak boleh negatif!");
-            return;
-        }
-        if (berat > 0.5 * beratMuatanSaatIni) {
-            System.out.println("Maaf, demi keselamatan, pembongkaran muatan satu kali jalan tidak boleh melebihi 50% dari muatan saat ini!");
-            return;
-        }
-        if (berat > beratMuatanSaatIni) {
-            System.out.println("Berat muatan yang diturunkan melebihi muatan saat ini!");
-            return;
-        }
         beratMuatanSaatIni -= berat;
-        System.out.println("Muatan diturunkan. Berat sekarang: " + beratMuatanSaatIni + " kg");
-    }
-
-    public void cetakInfo() {
-        System.out.println("Nomor Resi        : " + nomorResi);
-        System.out.println("Nama Pemilik      : " + namaPemilik);
-        System.out.println("Kapasitas Maksimal: " + kapasitasMaksimal + " kg");
-        System.out.println("Muatan Saat Ini   : " + beratMuatanSaatIni + " kg");
     }
 }
 ```
 
-### Kode Class `TestLogistik`
+### `TestLogistik.java`
 
 ```java
-package id.ac.polinema;
+public class TestLogistik {
+    public static void main(String[] args) {
+        Kontainer kontainerAlfa = new Kontainer("REQ-9988", "PT. Maju Bersama", 5000);
 
+        System.out.println("Nama Pemilik Kontainer: " + kontainerAlfa.getNamaPemilik());
+        System.out.println("Kapasitas Maksimal: " + kontainerAlfa.getKapasitasMaksimal() + " kg");
+
+        System.out.println("\nMemasukkan muatan baru seberat 6.000 kg...");
+        kontainerAlfa.tambahMuatan(6000);
+        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+
+        System.out.println("\nMemasukkan muatan baru seberat 4.000 kg...");
+        kontainerAlfa.tambahMuatan(4000);
+        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+
+        System.out.println("\nMembongkar muat/menurunkan barang seberat 500 kg...");
+        kontainerAlfa.turunkanMuatan(500);
+        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+
+        System.out.println("\nMembongkar muat/menurunkan barang seberat 1.500 kg...");
+        kontainerAlfa.turunkanMuatan(1500);
+        System.out.println("Berat muatan saat ini: " + kontainerAlfa.getBeratMuatanSaatIni() + " kg");
+    }
+}
+```
+
+### Output yang diharapkan
+
+```text
+Nama Pemilik Kontainer: PT. Maju Bersama
+Kapasitas Maksimal: 5000.0 kg
+
+Memasukkan muatan baru seberat 6.000 kg...
+Maaf, berat muatan melebihi kapasitas maksimal kontainer.
+Berat muatan saat ini: 0.0 kg
+
+Memasukkan muatan baru seberat 4.000 kg...
+Berat muatan saat ini: 4000.0 kg
+
+Membongkar muat/menurunkan barang seberat 500 kg...
+Berat muatan saat ini: 3500.0 kg
+
+Membongkar muat/menurunkan barang seberat 1.500 kg...
+Berat muatan saat ini: 2000.0 kg
+```
+
+### Jawaban
+
+Class `Kontainer` menerapkan enkapsulasi dengan menjadikan seluruh atribut `private`. Data dibaca melalui getter, sedangkan perubahan berat muatan dilakukan melalui `tambahMuatan()` dan `turunkanMuatan()`. Ketika tambahan muatan membuat berat melebihi kapasitas, perubahan ditolak sehingga state object tetap aman.
+
+---
+
+## 4.5 Tugas 5 – Batas Bongkar Maksimal 50%
+
+Method `turunkanMuatan()` dimodifikasi sehingga satu kali pembongkaran tidak boleh lebih dari 50% berat muatan saat ini.
+
+```java
+public void turunkanMuatan(double berat) {
+    if (berat > beratMuatanSaatIni) {
+        System.out.println("Maaf, berat muatan yang diturunkan melebihi muatan saat ini!");
+    } else if (berat > 0.5 * beratMuatanSaatIni) {
+        System.out.println("Maaf, demi keselamatan, pembongkaran muatan satu kali jalan tidak boleh melebihi 50% dari muatan saat ini!");
+    } else {
+        beratMuatanSaatIni -= berat;
+    }
+}
+```
+
+Contoh ketika muatan 4000 kg dan operator mencoba menurunkan 2500 kg:
+
+```text
+Mencoba menurunkan muatan 2.500 kg...
+Maaf, demi keselamatan, pembongkaran muatan satu kali jalan tidak boleh melebihi 50% dari muatan saat ini!
+Berat muatan saat ini: 4000.0 kg
+```
+
+Jika menurunkan tepat 2000 kg, operasi diperbolehkan karena 2000 kg = 50% dari 4000 kg.
+
+---
+
+## 4.6 Tugas 6 – Input Dinamis dengan Scanner
+
+### `TestLogistik.java`
+
+```java
 import java.util.Scanner;
 
 public class TestLogistik {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Masukkan nomor resi   : ");
+        System.out.print("Masukkan nomor resi: ");
         String nomorResi = scanner.nextLine();
-        System.out.print("Masukkan nama pemilik : ");
+        System.out.print("Masukkan nama pemilik: ");
         String namaPemilik = scanner.nextLine();
-        System.out.print("Masukkan kapasitas maks (kg): ");
+        System.out.print("Masukkan kapasitas maksimal (kg): ");
         double kapasitas = scanner.nextDouble();
 
         Kontainer kontainer = new Kontainer(nomorResi, namaPemilik, kapasitas);
-        System.out.println();
-        kontainer.cetakInfo();
-        System.out.println();
 
-        System.out.print("Masukkan berat muatan yang ditambahkan (kg): ");
-        double tambah = scanner.nextDouble();
-        kontainer.tambahMuatan(tambah);
-        System.out.println();
-        kontainer.cetakInfo();
-        System.out.println();
+        System.out.print("Masukkan berat barang yang ditambahkan (kg): ");
+        double tambahMuatan = scanner.nextDouble();
+        kontainer.tambahMuatan(tambahMuatan);
+        System.out.println("Berat muatan saat ini: " + kontainer.getBeratMuatanSaatIni() + " kg");
 
-        System.out.print("Masukkan berat muatan yang diturunkan (kg): ");
-        double turun = scanner.nextDouble();
-        kontainer.turunkanMuatan(turun);
-        System.out.println();
-        kontainer.cetakInfo();
+        System.out.print("Masukkan berat barang yang dibongkar (kg): ");
+        double turunkanMuatan = scanner.nextDouble();
+        kontainer.turunkanMuatan(turunkanMuatan);
+        System.out.println("Berat muatan saat ini: " + kontainer.getBeratMuatanSaatIni() + " kg");
 
         scanner.close();
     }
 }
 ```
 
+`Scanner` memungkinkan nilai `tambahMuatan` dan `turunkanMuatan` tidak lagi ditentukan langsung di source code, tetapi dimasukkan pengguna melalui terminal.
+
 ---
 
-## 4.4 Soal 5 – Batas Turunkan Muatan 50%
+## 4.7 Tugas 7 – Sistem Pemesanan Tiket Bioskop
 
-### Pertanyaan
-Modifikasi method `turunkanMuatan()` agar nominal berat muatan yang dibongkar/diturunkan dalam satu kali pemanggilan maksimal hanya boleh sebesar 50% dari total berat muatan saat ini.
-
-### Jawaban
+### `Tiket.java`
 
 ```java
-public void turunkanMuatan(double berat) {
-    if (berat < 0) {
-        System.out.println("Berat muatan tidak boleh negatif!");
-        return;
-    }
-    if (berat > 0.5 * beratMuatanSaatIni) {
-        System.out.println("Maaf, demi keselamatan, pembongkaran muatan satu kali jalan tidak boleh melebihi 50% dari muatan saat ini!");
-        return;
-    }
-    if (berat > beratMuatanSaatIni) {
-        System.out.println("Berat muatan yang diturunkan melebihi muatan saat ini!");
-        return;
-    }
-    beratMuatanSaatIni -= berat;
-    System.out.println("Muatan diturunkan. Berat sekarang: " + beratMuatanSaatIni + " kg");
-}
-```
-
-Logika validasi yang diterapkan:
-1. Jika berat negatif → ditolak.
-2. Jika berat melebihi 50% muatan saat ini → ditolak dengan peringatan keselamatan.
-3. Jika berat melebihi muatan saat ini → ditolak.
-4. Jika lolos semua validasi → muatan dikurangi.
-
----
-
-## 4.5 Soal 6 – Input Dinamis dari Pengguna
-
-### Pertanyaan
-Modifikasi kelas `Main TestLogistik` agar parameter jumlah berat barang yang dimasukkan maupun yang dibongkar dapat menerima input nilai dinamis dari pengguna secara interaktif melalui terminal menggunakan `java.util.Scanner`.
-
-### Jawaban
-
-Kode `TestLogistik` pada bagian 4.3 sudah menggunakan `java.util.Scanner` untuk menerima input dinamis dari pengguna. Seluruh atribut (`nomorResi`, `namaPemilik`, `kapasitasMaksimal`, `tambahMuatan`, `turunkanMuatan`) diinput melalui terminal.
-
----
-
-## 4.6 Soal 7 – Class Tiket Bioskop
-
-### Pertanyaan
-Buatlah class `Tiket` untuk mengelola data pemesanan tiket bioskop dengan atribut `judulFilm`, `hargaDasar`, dan `statusPembayaran`.
-
-### Kode Class `Tiket`
-
-```java
-package id.ac.polinema;
-
 public class Tiket {
     private String judulFilm;
     private double hargaDasar;
@@ -733,80 +714,50 @@ public class Tiket {
         return hargaDasar;
     }
 
-    public boolean getStatusPembayaran() {
+    public boolean isStatusPembayaran() {
         return statusPembayaran;
     }
 
     public void lakukanPembayaran() {
         statusPembayaran = true;
-        System.out.println("Pembayaran berhasil untuk film: " + judulFilm);
-    }
-
-    public void cetakInfo() {
-        System.out.println("Judul Film       : " + judulFilm);
-        System.out.println("Harga Dasar      : Rp " + hargaDasar);
-        System.out.println("Status Pembayaran: " + (statusPembayaran ? "Sudah Dibayar" : "Belum Dibayar"));
     }
 }
 ```
 
-### Kode Class `TestBioskop`
+### `TestBioskop.java`
 
 ```java
-package id.ac.polinema;
-
 public class TestBioskop {
     public static void main(String[] args) {
-        Tiket tiket1 = new Tiket("Avengers: Endgame", 50000);
-        Tiket tiket2 = new Tiket("Oppenheimer", -10000);
+        Tiket tiket1 = new Tiket("Avengers: Endgame", -50000);
+        System.out.println("Film: " + tiket1.getJudulFilm());
+        System.out.println("Harga Tiket: " + tiket1.getHargaDasar());
+        System.out.println("Status Lunas? " + tiket1.isStatusPembayaran());
 
-        System.out.println("=== Tiket 1 ===");
-        tiket1.cetakInfo();
+        System.out.println("\nMemproses pembayaran...");
         tiket1.lakukanPembayaran();
-        tiket1.cetakInfo();
-
-        System.out.println();
-
-        System.out.println("=== Tiket 2 ===");
-        tiket2.cetakInfo();
-        tiket2.lakukanPembayaran();
-        tiket2.cetakInfo();
+        System.out.println("Status Lunas Terbaru? " + tiket1.isStatusPembayaran());
     }
 }
 ```
 
-### Verifikasi Hasil
+### Output
 
 ```text
-=== Tiket 1 ===
-Judul Film       : Avengers: Endgame
-Harga Dasar      : Rp 50000.0
-Status Pembayaran: Belum Dibayar
-Pembayaran berhasil untuk film: Avengers: Endgame
-Judul Film       : Avengers: Endgame
-Harga Dasar      : Rp 50000.0
-Status Pembayaran: Sudah Dibayar
+Film: Avengers: Endgame
+Harga Tiket: 35000.0
+Status Lunas? false
 
-=== Tiket 2 ===
-Judul Film       : Oppenheimer
-Harga Dasar      : Rp 35000.0
-Status Pembayaran: Belum Dibayar
-Pembayaran berhasil untuk film: Oppenheimer
-Judul Film       : Oppenheimer
-Harga Dasar      : Rp 35000.0
-Status Pembayaran: Sudah Dibayar
+Memproses pembayaran...
+Status Lunas Terbaru? true
 ```
 
-Pada tiket 2, harga dasar yang dimasukkan `-10000` (negatif) secara otomatis diset menjadi `Rp 35000` sesuai ketentuan.
+### Jawaban
+
+Harga `-50000` tidak diterima karena harga dasar tidak boleh negatif, sehingga konstruktor mengubahnya menjadi nilai default `35000`. Status pembayaran pada awal object adalah `false`. Status tidak memiliki setter agar tidak dapat diubah sembarangan dari luar class. Setelah `lakukanPembayaran()` dipanggil, status berubah menjadi `true`.
 
 ---
 
 # 5. Kesimpulan
 
-Berdasarkan praktikum Jobsheet 3, telah dipelajari konsep enkapsulasi pada Pemrograman Berorientasi Objek. Enkapsulasi diterapkan dengan menggunakan *access modifier* `private` pada atribut sehingga data tidak dapat diakses atau diubah secara langsung dari luar class. Akses terhadap atribut dilakukan melalui method *getter* (untuk membaca) dan *setter* (untuk mengubah).
-
-Percobaan pada jobsheet ini menunjukkan bahwa tanpa enkapsulasi, atribut dapat diakses dan dimanipulasi secara sembarangan (misalnya kecepatan motor berubah tanpa menyalakan mesin). Dengan menerapkan *access modifier* `private` dan method kontrol, akses terhadap atribut menjadi terkontrol dan sesuai dengan logika bisnis yang diinginkan.
-
-Selain itu, telah dipelajari konsep konstruktor yang digunakan untuk inisialisasi object saat pertama kali dibuat, serta notasi pada UML Class Diagram yang menggunakan simbol `+`, `-`, `#`, dan `~` untuk menunjukkan *access modifier*.
-
-Pada tugas praktikum, konsep enkapsulasi diterapkan pada class `Kontainer` untuk sistem logistik dan class `Tiket` untuk sistem pemesanan tiket bioskop, lengkap dengan validasi data dan pembatasan akses terhadap atribut.
+Praktikum Jobsheet 3 menunjukkan penerapan enkapsulasi dalam Java. Atribut dapat dilindungi menggunakan access modifier `private`, kemudian diakses melalui getter atau dimodifikasi melalui setter dan method khusus. Konstruktor digunakan untuk memberikan nilai awal saat object dibuat. Praktikum juga memperlihatkan bagaimana validasi pada method dapat menjaga state object agar tidak berubah secara sembarangan. Selain itu, notasi access modifier pada UML Class Diagram membantu menggambarkan tingkat akses setiap atribut dan method.
