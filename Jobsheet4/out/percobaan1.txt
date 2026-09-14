@@ -1,0 +1,9 @@
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 3.00
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 4.00
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 3.00

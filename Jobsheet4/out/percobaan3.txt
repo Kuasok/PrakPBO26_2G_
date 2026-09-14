@@ -1,0 +1,9 @@
+Nama: Gaya Baru
+Kelas: Bisnis
+Masinis: Nip: 1234
+Nama: Spongebob Squarepants
+
+Asisten: Nip: 4567
+Nama: Patrick Star
+
+

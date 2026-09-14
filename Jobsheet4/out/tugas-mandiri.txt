@@ -1,0 +1,4 @@
+Buku: Pemrograman Berbasis Objek
+Rak: RAK-01
+Peminjaman oleh: Budi
+Buku: Pemrograman Berbasis Objek

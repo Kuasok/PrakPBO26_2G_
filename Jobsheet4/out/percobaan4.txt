@@ -1,0 +1,15 @@
+Kode: A
+Nomor: 1
+Penumpang: Ktp: 12345
+Nama: Mr. Krab
+
+Nomor: 2
+Nomor: 3
+Nomor: 4
+Nomor: 5
+Nomor: 6
+Nomor: 7
+Nomor: 8
+Nomor: 9
+Nomor: 10
+
