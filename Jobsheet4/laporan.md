@@ -8,7 +8,6 @@
 - Pertemuan : 4
 - Materi : Aggregation, Composition, Dependency
 
-> Catatan struktur: contoh kode pada PDF menggunakan package `id.ac.polinema.relasiclass.percobaan1` sampai `percobaan6`. Folder proyek ini mengikuti package tersebut secara langsung agar source root dan package Java konsisten.
 
 ---
 
