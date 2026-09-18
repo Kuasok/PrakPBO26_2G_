@@ -420,411 +420,393 @@ Dalam menentukan relasi, pertama tanyakan apakah object lain perlu disimpan seba
 Jobsheet 4 menunjukkan bahwa relasi antar class tidak cukup dilihat hanya dari adanya atribut bertipe object. Aggregation ditunjukkan oleh part yang dibuat di luar whole dan diberikan melalui constructor/setter, Composition oleh part yang dibuat sendiri oleh whole, sedangkan Dependency terjadi ketika object hanya digunakan sementara melalui parameter method. Percobaan 3 dan 4 juga memperlihatkan pentingnya pengecekan `null`, array of object, serta multiplicity. Struktur package pada proyek ini dibuat mengikuti deklarasi package Java agar dapat dibuka sebagai satu source tree tanpa error package mismatch di VS Code.
 
 
----
 
-# Lampiran — Kutipan Kode Java Tiap Checkpoint
+## 3.1 Percobaan 1 – Aggregation Satu-ke-Satu
 
-Bagian ini menampilkan kutipan kode Java pada checkpoint utama setiap percobaan dan tugas, mengikuti pola dokumentasi pada Jobsheet 3.
+### `Processor.java`
 
-## Percobaan 1 — Aggregation Satu-ke-Satu
-
-### Checkpoint 1 — Processor
-\`\`\`java
-private String merk;
-private double cache;
-
-public Processor() {}
-
-public Processor(String merk, double cache) {
-    this.merk = merk;
-    this.cache = cache;
+```java
+package id.ac.polinema.relasiclass.percobaan1;
+public class Processor {
+ private String merk; private double cache;
+ public Processor() {}
+ public Processor(String merk,double cache) { this.merk=merk; this.cache=cache; }
+ public void setMerk(String merk) { this.merk=merk; } public String getMerk() { return merk; }
+ public void setCache(double cache) { this.cache=cache; } public double getCache() { return cache; }
+ public void info() { System.out.printf("Merk Processor = %s\n",merk); System.out.printf("Cache Memory = %.2f\n",cache); }
 }
+```
 
-public void setCache(double cache) {
-    this.cache = cache;
+### `Laptop.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan1;
+public class Laptop {
+ private String merk; private Processor proc;
+ public Laptop() {}
+ public Laptop(String merk,Processor proc) { this.merk=merk; this.proc=proc; }
+ public void setMerk(String merk) { this.merk=merk; } public String getMerk() { return merk; }
+ public void setProc(Processor proc) { this.proc=proc; } public Processor getProc() { return proc; }
+ public void info() { System.out.println("Merk Laptop = "+merk); proc.info(); }
 }
+```
 
-public void info() {
-    System.out.printf("Merk Processor = %s\n", merk);
-    System.out.printf("Cache Memory = %.2f\n", cache);
+### `MainPercobaan1.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan1;
+public class MainPercobaan1 {
+ public static void main(String[] args) {
+  Processor p=new Processor("Intel i5",3); Laptop l=new Laptop("Thinkpad",p); l.info();
+  Processor p1=new Processor(); p1.setMerk("Intel i5"); p1.setCache(4); Laptop l1=new Laptop(); l1.setMerk("Thinkpad"); l1.setProc(p1); l1.info();
+  Laptop l2=new Laptop("Thinkpad",new Processor("Intel i5",3)); l2.info();
+ }
 }
-\`\`\`
+```
 
-### Checkpoint 2 — Relasi Laptop dengan Processor
-\`\`\`java
-private String merk;
-private Processor proc;
+### Output
 
-public Laptop(String merk, Processor proc) {
-    this.merk = merk;
-    this.proc = proc;
+```text
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 3.00
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 4.00
+Merk Laptop = Thinkpad
+Merk Processor = Intel i5
+Cache Memory = 3.00
+```
+
+### Analisis
+
+Object `Processor` dibuat di luar `Laptop`, kemudian diberikan melalui constructor atau setter. Karena `Laptop` hanya menyimpan referensi ke object `Processor`, hubungan ini merupakan aggregation.
+
+
+## 3.2 Percobaan 2 – Aggregation Ganda
+
+### `Pelanggan.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan2;
+public class Pelanggan {
+ private String nama; private Mobil mobil; private Sopir sopir; private int hari; public Pelanggan() {}
+ public void setNama(String nama){this.nama=nama;} public String getNama(){return nama;}
+ public void setMobil(Mobil mobil){this.mobil=mobil;} public Mobil getMobil(){return mobil;}
+ public void setSopir(Sopir sopir){this.sopir=sopir;} public Sopir getSopir(){return sopir;}
+ public void setHari(int hari){this.hari=hari;} public int getHari(){return hari;}
+ public int hitungBiayaTotal(){return mobil.hitungBiayaMobil(hari)+sopir.hitungBiayaSopir(hari);}
 }
+```
 
-public void setProc(Processor proc) {
-    this.proc = proc;
+### `Mobil.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan2;
+public class Mobil {
+ private String merk; private int biaya; public Mobil() {}
+ public void setMerk(String merk){this.merk=merk;} public String getMerk(){return merk;}
+ public void setBiaya(int biaya){this.biaya=biaya;} public int getBiaya(){return biaya;}
+ public int hitungBiayaMobil(int hari){return biaya*hari;}
 }
+```
 
-public void info() {
-    System.out.println("Merk Laptop = " + merk);
-    proc.info();
+### `Sopir.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan2;
+public class Sopir {
+ private String nama; private int biaya; public Sopir() {}
+ public void setNama(String nama){this.nama=nama;} public String getNama(){return nama;}
+ public void setBiaya(int biaya){this.biaya=biaya;} public int getBiaya(){return biaya;}
+ public int hitungBiayaSopir(int hari){return biaya*hari;}
 }
-\`\`\`
+```
 
-### Checkpoint 3 — Instansiasi
-\`\`\`java
-Processor p = new Processor("Intel i5", 3);
-Laptop l = new Laptop("Thinkpad", p);
-l.info();
+### `MainPercobaan2.java`
 
-Processor p1 = new Processor();
-p1.setMerk("Intel i5");
-p1.setCache(4);
-
-Laptop l1 = new Laptop();
-l1.setMerk("Thinkpad");
-l1.setProc(p1);
-l1.info();
-
-Laptop l2 = new Laptop(
-    "Thinkpad",
-    new Processor("Intel i5", 3)
-);
-l2.info();
-\`\`\`
-
-## Percobaan 2 — Aggregation Ganda
-
-### Checkpoint 1 — Atribut Relasi
-\`\`\`java
-private Mobil mobil;
-private Sopir sopir;
-private int hari;
-
-public void setMobil(Mobil mobil) {
-    this.mobil = mobil;
+```java
+package id.ac.polinema.relasiclass.percobaan2;
+public class MainPercobaan2 {
+ public static void main(String[] args) {
+  Mobil m=new Mobil();m.setMerk("Avanza");m.setBiaya(350000); Sopir s=new Sopir();s.setNama("John Doe");s.setBiaya(200000);
+  Pelanggan p=new Pelanggan();p.setNama("Jane Doe");p.setMobil(m);p.setSopir(s);p.setHari(2);
+  System.out.println("Biaya Total = "+p.hitungBiayaTotal()); System.out.println(p.getMobil().getMerk());
+ }
 }
+```
 
-public void setSopir(Sopir sopir) {
-    this.sopir = sopir;
+### Output
+
+```text
+Biaya Total = 1100000
+Avanza
+```
+
+### Analisis
+
+Class `Pelanggan` memiliki relasi dengan `Mobil` dan `Sopir`. Kedua object dibuat dari luar kemudian diberikan menggunakan setter, sehingga keduanya merupakan bagian yang teragregasi.
+
+
+## 3.3 Percobaan 3 – Aggregation Dua Role ke Class yang Sama
+
+### `Pegawai.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan3;
+public class Pegawai {
+ private String nip,nama; public Pegawai(String nip,String nama){this.nip=nip;this.nama=nama;}
+ public void setNip(String nip){this.nip=nip;} public String getNip(){return nip;}
+ public void setNama(String nama){this.nama=nama;} public String getNama(){return nama;}
+ public String info(){String info="";info+="Nip: "+this.nip+"\n";info+="Nama: "+this.nama+"\n";return info;}
 }
-\`\`\`
+```
 
-### Checkpoint 2 — Perhitungan Biaya
-\`\`\`java
-public int hitungBiayaTotal() {
-    return mobil.hitungBiayaMobil(hari)
-         + sopir.hitungBiayaSopir(hari);
+### `KeretaApi.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan3;
+public class KeretaApi {
+ private String nama,kelas; private Pegawai masinis,asisten;
+ public KeretaApi(String nama,String kelas,Pegawai masinis){this.nama=nama;this.kelas=kelas;this.masinis=masinis;}
+ public KeretaApi(String nama,String kelas,Pegawai masinis,Pegawai asisten){this.nama=nama;this.kelas=kelas;this.masinis=masinis;this.asisten=asisten;}
+ public void setMasinis(Pegawai masinis){this.masinis=masinis;} public Pegawai getMasinis(){return masinis;}
+ public void setAsisten(Pegawai asisten){this.asisten=asisten;} public Pegawai getAsisten(){return asisten;}
+ public String info(){String info="";info+="Nama: "+this.nama+"\n";info+="Kelas: "+this.kelas+"\n";info+="Masinis: "+this.masinis.info()+"\n";if(this.asisten!=null)info+="Asisten: "+this.asisten.info()+"\n";return info;}
 }
-\`\`\`
+```
 
-### Checkpoint 3 — Injection Object
-\`\`\`java
-Mobil m = new Mobil();
-m.setMerk("Avanza");
-m.setBiaya(350000);
+### `MainPercobaan3.java`
 
-Sopir s = new Sopir();
-s.setNama("John Doe");
-s.setBiaya(200000);
+```java
+package id.ac.polinema.relasiclass.percobaan3;
+public class MainPercobaan3 { public static void main(String[] args) { Pegawai masinis=new Pegawai("1234","Spongebob Squarepants");Pegawai asisten=new Pegawai("4567","Patrick Star");KeretaApi keretaApi=new KeretaApi("Gaya Baru","Bisnis",masinis,asisten);System.out.println(keretaApi.info()); } }
+```
 
-Pelanggan p = new Pelanggan();
-p.setMobil(m);
-p.setSopir(s);
-p.setHari(2);
+### `MainPertanyaan.java`
 
-System.out.println("Biaya Total = "
-    + p.hitungBiayaTotal());
-System.out.println(p.getMobil().getMerk());
-\`\`\`
+```java
+package id.ac.polinema.relasiclass.percobaan3;
+public class MainPertanyaan { public static void main(String[] args) { Pegawai masinis=new Pegawai("1234","Spongebob Squarepants");KeretaApi keretaApi=new KeretaApi("Gaya Baru","Bisnis",masinis);System.out.println(keretaApi.info()); } }
+```
 
-## Percobaan 3 — Aggregation Dua Role
+### Output
 
-### Checkpoint 1 — Atribut Masinis dan Asisten
-\`\`\`java
-private String nama, kelas;
-private Pegawai masinis, asisten;
+```text
+Nama: Gaya Baru
+Kelas: Bisnis
+Masinis: Nip: 1234
+Nama: Spongebob Squarepants
 
-public KeretaApi(
-    String nama,
-    String kelas,
-    Pegawai masinis,
-    Pegawai asisten
-) {
-    this.nama = nama;
-    this.kelas = kelas;
-    this.masinis = masinis;
-    this.asisten = asisten;
+Asisten: Nip: 4567
+Nama: Patrick Star
+```
+
+### Analisis
+
+Class `KeretaApi` menggunakan class `Pegawai` pada dua role berbeda, yaitu `masinis` dan `asisten`. Guard `if (this.asisten != null)` memungkinkan object kereta tetap menampilkan informasi ketika asisten tidak diberikan.
+
+
+## 3.4 Percobaan 4 – Array of Object, Multiplicity, Composition + Aggregation
+
+### `Gerbong.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan4;
+public class Gerbong {
+ private String kode; private Kursi[] arrayKursi;
+ public Gerbong(String kode,int jumlah){this.kode=kode;this.arrayKursi=new Kursi[jumlah];this.initKursi();}
+ private void initKursi(){for(int i=0;i<arrayKursi.length;i++)this.arrayKursi[i]=new Kursi(String.valueOf(i+1));}
+ public void setPenumpang(Penumpang penumpang,int nomor){this.arrayKursi[nomor-1].setPenumpang(penumpang);}
+ public String info(){String info="";info+="Kode: "+kode+"\n";for(Kursi kursi:arrayKursi)info+=kursi.info();return info;}
 }
-\`\`\`
+```
 
-### Checkpoint 2 — Guard Clause Asisten
-\`\`\`java
-public String info() {
-    String info = "";
-    info += "Nama: " + this.nama + "\n";
-    info += "Kelas: " + this.kelas + "\n";
-    info += "Masinis: "
-         + this.masinis.info() + "\n";
+### `Kursi.java`
 
-    if (this.asisten != null)
-        info += "Asisten: "
-             + this.asisten.info() + "\n";
+```java
+package id.ac.polinema.relasiclass.percobaan4;
+public class Kursi { private String nomor; private Penumpang penumpang; public Kursi(String nomor){this.nomor=nomor;} public void setPenumpang(Penumpang penumpang){this.penumpang=penumpang;} public Penumpang getPenumpang(){return penumpang;} public String info(){String info="";info+="Nomor: "+nomor+"\n";if(this.penumpang!=null)info+="Penumpang: "+penumpang.info()+"\n";return info;} }
+```
 
-    return info;
+### `Penumpang.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan4;
+public class Penumpang { private String ktp,nama; public Penumpang(String ktp,String nama){this.ktp=ktp;this.nama=nama;} public String getKtp(){return ktp;} public String getNama(){return nama;} public String info(){String info="";info+="Ktp: "+ktp+"\n";info+="Nama: "+nama+"\n";return info;} }
+```
+
+### `MainPercobaan4.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan4;
+public class MainPercobaan4 { public static void main(String[] args) { Penumpang p=new Penumpang("12345","Mr. Krab");Gerbong gerbong=new Gerbong("A",10);gerbong.setPenumpang(p,1);System.out.println(gerbong.info()); } }
+```
+
+### Output
+
+```text
+Kode: A
+Nomor: 1
+Penumpang: Ktp: 12345
+Nama: Mr. Krab
+
+Nomor: 2
+Nomor: 3
+Nomor: 4
+Nomor: 5
+Nomor: 6
+Nomor: 7
+Nomor: 8
+Nomor: 9
+Nomor: 10
+```
+
+### Analisis
+
+`Gerbong` membuat array `Kursi` dan menginisialisasi setiap elemennya dengan `new Kursi(...)`, sehingga hubungan Gerbong–Kursi merupakan composition. Object `Penumpang` diberikan ke kursi dari luar, sehingga hubungan Kursi–Penumpang merupakan aggregation.
+
+
+## 3.5 Percobaan 5 – Composition
+
+### `Mesin.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan5;
+public class Mesin { private String tipe; public Mesin(){this.tipe="4-silinder";} public String getTipe(){return tipe;} }
+```
+
+### `Mobil.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan5;
+public class Mobil { private String merek; private Mesin mesin; public Mobil(String merek){this.merek=merek;this.mesin=new Mesin();} public void tampilkanInfo(){System.out.println("Mobil: "+merek);System.out.println("Mesin: "+mesin.getTipe());} }
+```
+
+### `MainPercobaan5.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan5;
+public class MainPercobaan5 { public static void main(String[] args) { Mobil mobil=new Mobil("Avanza");mobil.tampilkanInfo(); } }
+```
+
+### Output
+
+```text
+Mobil: Avanza
+Mesin: 4-silinder
+```
+
+### Analisis
+
+Object `Mesin` dibuat langsung di dalam constructor `Mobil` menggunakan `new Mesin()`. Hal ini menunjukkan bahwa `Mobil` memiliki dan mengelola object `Mesin` sebagai bagian internalnya, sehingga relasinya merupakan composition.
+
+
+## 3.6 Percobaan 6 – Dependency / Uses-A
+
+### `Laptop.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan6;
+public class Laptop { private String merk; public Laptop(String merk){this.merk=merk;} public void cetakDokumen(Printer printer,String namaFile){System.out.println(merk+" mengirim dokumen ke printer...");printer.cetak(namaFile);} }
+```
+
+### `Printer.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan6;
+public class Printer { private String merk; public Printer(String merk){this.merk=merk;} public void cetak(String namaFile){System.out.println("["+merk+"] Mencetak "+namaFile+"...");System.out.println("["+merk+"] Selesai.");} }
+```
+
+### `MainPercobaan6.java`
+
+```java
+package id.ac.polinema.relasiclass.percobaan6;
+public class MainPercobaan6 { public static void main(String[] args) { Laptop laptop=new Laptop("Thinkpad");Printer printer=new Printer("Epson L3110");laptop.cetakDokumen(printer,"Laporan.pdf"); } }
+```
+
+### Output
+
+```text
+Thinkpad mengirim dokumen ke printer...
+[Epson L3110] Mencetak Laporan.pdf...
+[Epson L3110] Selesai.
+```
+
+### Analisis
+
+`Printer` tidak disimpan sebagai atribut pada `Laptop`. Object printer hanya diterima sebagai parameter method `cetakDokumen()`, sehingga relasi Laptop–Printer merupakan dependency.
+
+
+## 4.1 Tugas Mandiri – Studi Kasus Perpustakaan
+
+### `Buku.java`
+
+```java
+package id.ac.polinema.relasiclass.tugas;
+public class Buku { private String judul; public Buku(String judul){this.judul=judul;} public String getJudul(){return judul;} }
+```
+
+### `Rak.java`
+
+```java
+package id.ac.polinema.relasiclass.tugas;
+public class Rak { private String kode; public Rak(String kode){this.kode=kode;} public String getKode(){return kode;} }
+```
+
+### `Anggota.java`
+
+```java
+package id.ac.polinema.relasiclass.tugas;
+public class Anggota { private String nama; public Anggota(String nama) { this.nama = nama; } public String getNama() { return nama; } }
+```
+
+### `Perpustakaan.java`
+
+```java
+package id.ac.polinema.relasiclass.tugas;
+public class Perpustakaan {
+    private Buku buku; // Aggregation
+    private Rak rak;   // Composition
+    public Perpustakaan(Buku buku) {
+        this.buku = buku;
+        this.rak = new Rak("RAK-01");
+    }
+    public void pinjam(Anggota anggota) { // Dependency
+        System.out.println("Peminjaman oleh: " + anggota.getNama());
+        System.out.println("Buku: " + buku.getJudul());
+    }
+    public void info() {
+        System.out.println("Buku: " + buku.getJudul());
+        System.out.println("Rak: " + rak.getKode());
+    }
 }
-\`\`\`
+```
 
-### Checkpoint 3 — Dua Object Pegawai
-\`\`\`java
-Pegawai masinis =
-    new Pegawai("1234", "Spongebob Squarepants");
+### `MainTugasMandiri.java`
 
-Pegawai asisten =
-    new Pegawai("4567", "Patrick Star");
-
-KeretaApi keretaApi =
-    new KeretaApi(
-        "Gaya Baru",
-        "Bisnis",
-        masinis,
-        asisten
-    );
-
-System.out.println(keretaApi.info());
-\`\`\`
-
-### Checkpoint 4 — Constructor Tanpa Asisten
-\`\`\`java
-Pegawai masinis =
-    new Pegawai("1234", "Spongebob Squarepants");
-
-KeretaApi keretaApi =
-    new KeretaApi("Gaya Baru", "Bisnis", masinis);
-
-System.out.println(keretaApi.info());
-\`\`\`
-
-## Percobaan 4 — Array of Object dan Multiplicity
-
-### Checkpoint 1 — Membuat Array Kursi
-\`\`\`java
-private String kode;
-private Kursi[] arrayKursi;
-
-public Gerbong(String kode, int jumlah) {
-    this.kode = kode;
-    this.arrayKursi = new Kursi[jumlah];
-    this.initKursi();
+```java
+package id.ac.polinema.relasiclass.tugas;
+public class MainTugasMandiri {
+    public static void main(String[] args) {
+        Buku buku = new Buku("Pemrograman Berbasis Objek");
+        Anggota anggota = new Anggota("Budi");
+        Perpustakaan perpustakaan = new Perpustakaan(buku);
+        perpustakaan.info();
+        perpustakaan.pinjam(anggota);
+    }
 }
-\`\`\`
+```
 
-### Checkpoint 2 — Composition Gerbong ke Kursi
-\`\`\`java
-private void initKursi() {
-    for (int i = 0; i < arrayKursi.length; i++)
-        this.arrayKursi[i] =
-            new Kursi(String.valueOf(i + 1));
-}
-\`\`\`
+### Output
 
-### Checkpoint 3 — Aggregation Kursi ke Penumpang
-\`\`\`java
-private Penumpang penumpang;
+```text
+Buku: Pemrograman Berbasis Objek
+Rak: RAK-01
+Peminjaman oleh: Budi
+Buku: Pemrograman Berbasis Objek
+```
 
-public void setPenumpang(Penumpang penumpang) {
-    this.penumpang = penumpang;
-}
+### Analisis
 
-public Penumpang getPenumpang() {
-    return penumpang;
-}
-\`\`\`
-
-### Checkpoint 4 — Pengecekan Null
-\`\`\`java
-public String info() {
-    String info = "";
-    info += "Nomor: " + nomor + "\n";
-
-    if (this.penumpang != null)
-        info += "Penumpang: "
-             + penumpang.info() + "\n";
-
-    return info;
-}
-\`\`\`
-
-### Checkpoint 5 — Pemetaan Nomor Kursi ke Index Array
-\`\`\`java
-public void setPenumpang(
-    Penumpang penumpang,
-    int nomor
-) {
-    this.arrayKursi[nomor - 1]
-        .setPenumpang(penumpang);
-}
-\`\`\`
-
-### Checkpoint 6 — Instansiasi
-\`\`\`java
-Penumpang p =
-    new Penumpang("12345", "Mr. Krab");
-
-Gerbong gerbong =
-    new Gerbong("A", 10);
-
-gerbong.setPenumpang(p, 1);
-
-System.out.println(gerbong.info());
-\`\`\`
-
-## Percobaan 5 — Composition
-
-### Checkpoint 1 — Mobil Membuat Mesin
-\`\`\`java
-private String merek;
-private Mesin mesin;
-
-public Mobil(String merek) {
-    this.merek = merek;
-    this.mesin = new Mesin();
-}
-\`\`\`
-
-### Checkpoint 2 — Inisialisasi Mesin
-\`\`\`java
-private String tipe;
-
-public Mesin() {
-    this.tipe = "4-silinder";
-}
-
-public String getTipe() {
-    return tipe;
-}
-\`\`\`
-
-### Checkpoint 3 — Instansiasi
-\`\`\`java
-Mobil mobil = new Mobil("Avanza");
-mobil.tampilkanInfo();
-\`\`\`
-
-## Percobaan 6 — Dependency / Uses-A
-
-### Checkpoint 1 — Dependency melalui Parameter
-\`\`\`java
-public void cetakDokumen(
-    Printer printer,
-    String namaFile
-) {
-    System.out.println(
-        merk + " mengirim dokumen ke printer..."
-    );
-    printer.cetak(namaFile);
-}
-\`\`\`
-
-### Checkpoint 2 — Method Printer
-\`\`\`java
-public void cetak(String namaFile) {
-    System.out.println(
-        "[" + merk + "] Mencetak "
-        + namaFile + "..."
-    );
-    System.out.println(
-        "[" + merk + "] Selesai."
-    );
-}
-\`\`\`
-
-### Checkpoint 3 — Object Printer Digunakan oleh Laptop
-\`\`\`java
-Laptop laptop = new Laptop("Thinkpad");
-Printer printer = new Printer("Epson L3110");
-
-laptop.cetakDokumen(
-    printer,
-    "Laporan.pdf"
-);
-\`\`\`
-
-# Tugas Mandiri — Sistem Perpustakaan
-
-### Checkpoint 1 — Buku
-\`\`\`java
-private String judul;
-
-public Buku(String judul) {
-    this.judul = judul;
-}
-
-public String getJudul() {
-    return judul;
-}
-\`\`\`
-
-### Checkpoint 2 — Rak
-\`\`\`java
-private String kode;
-
-public Rak(String kode) {
-    this.kode = kode;
-}
-
-public String getKode() {
-    return kode;
-}
-\`\`\`
-
-### Checkpoint 3 — Anggota
-\`\`\`java
-private String nama;
-
-public Anggota(String nama) {
-    this.nama = nama;
-}
-
-public String getNama() {
-    return nama;
-}
-\`\`\`
-
-### Checkpoint 4 — Aggregation dan Composition
-\`\`\`java
-private Buku buku; // Aggregation
-private Rak rak;   // Composition
-
-public Perpustakaan(Buku buku) {
-    this.buku = buku;
-    this.rak = new Rak("RAK-01");
-}
-\`\`\`
-
-### Checkpoint 5 — Dependency
-\`\`\`java
-public void pinjam(Anggota anggota) {
-    System.out.println(
-        "Peminjaman oleh: "
-        + anggota.getNama()
-    );
-    System.out.println(
-        "Buku: " + buku.getJudul()
-    );
-}
-\`\`\`
-
-### Checkpoint 6 — Instansiasi Tugas Mandiri
-\`\`\`java
-Buku buku =
-    new Buku("Pemrograman Berbasis Objek");
-
-Anggota anggota =
-    new Anggota("Budi");
-
-Perpustakaan perpustakaan =
-    new Perpustakaan(buku);
-
-perpustakaan.info();
-perpustakaan.pinjam(anggota);
-\`\`\`
+`Perpustakaan` menyimpan `Buku` yang dibuat dari luar sehingga merupakan aggregation, membuat `Rak` sendiri sehingga merupakan composition, dan menerima `Anggota` hanya sebagai parameter method `pinjam()` sehingga merupakan dependency.
