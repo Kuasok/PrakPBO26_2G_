@@ -418,3 +418,413 @@ Dalam menentukan relasi, pertama tanyakan apakah object lain perlu disimpan seba
 
 # 10. Kesimpulan
 Jobsheet 4 menunjukkan bahwa relasi antar class tidak cukup dilihat hanya dari adanya atribut bertipe object. Aggregation ditunjukkan oleh part yang dibuat di luar whole dan diberikan melalui constructor/setter, Composition oleh part yang dibuat sendiri oleh whole, sedangkan Dependency terjadi ketika object hanya digunakan sementara melalui parameter method. Percobaan 3 dan 4 juga memperlihatkan pentingnya pengecekan `null`, array of object, serta multiplicity. Struktur package pada proyek ini dibuat mengikuti deklarasi package Java agar dapat dibuka sebagai satu source tree tanpa error package mismatch di VS Code.
+
+
+---
+
+# Lampiran — Kutipan Kode Java Tiap Checkpoint
+
+Bagian ini menampilkan kutipan kode Java pada checkpoint utama setiap percobaan dan tugas, mengikuti pola dokumentasi pada Jobsheet 3.
+
+## Percobaan 1 — Aggregation Satu-ke-Satu
+
+### Checkpoint 1 — Processor
+\`\`\`java
+private String merk;
+private double cache;
+
+public Processor() {}
+
+public Processor(String merk, double cache) {
+    this.merk = merk;
+    this.cache = cache;
+}
+
+public void setCache(double cache) {
+    this.cache = cache;
+}
+
+public void info() {
+    System.out.printf("Merk Processor = %s\n", merk);
+    System.out.printf("Cache Memory = %.2f\n", cache);
+}
+\`\`\`
+
+### Checkpoint 2 — Relasi Laptop dengan Processor
+\`\`\`java
+private String merk;
+private Processor proc;
+
+public Laptop(String merk, Processor proc) {
+    this.merk = merk;
+    this.proc = proc;
+}
+
+public void setProc(Processor proc) {
+    this.proc = proc;
+}
+
+public void info() {
+    System.out.println("Merk Laptop = " + merk);
+    proc.info();
+}
+\`\`\`
+
+### Checkpoint 3 — Instansiasi
+\`\`\`java
+Processor p = new Processor("Intel i5", 3);
+Laptop l = new Laptop("Thinkpad", p);
+l.info();
+
+Processor p1 = new Processor();
+p1.setMerk("Intel i5");
+p1.setCache(4);
+
+Laptop l1 = new Laptop();
+l1.setMerk("Thinkpad");
+l1.setProc(p1);
+l1.info();
+
+Laptop l2 = new Laptop(
+    "Thinkpad",
+    new Processor("Intel i5", 3)
+);
+l2.info();
+\`\`\`
+
+## Percobaan 2 — Aggregation Ganda
+
+### Checkpoint 1 — Atribut Relasi
+\`\`\`java
+private Mobil mobil;
+private Sopir sopir;
+private int hari;
+
+public void setMobil(Mobil mobil) {
+    this.mobil = mobil;
+}
+
+public void setSopir(Sopir sopir) {
+    this.sopir = sopir;
+}
+\`\`\`
+
+### Checkpoint 2 — Perhitungan Biaya
+\`\`\`java
+public int hitungBiayaTotal() {
+    return mobil.hitungBiayaMobil(hari)
+         + sopir.hitungBiayaSopir(hari);
+}
+\`\`\`
+
+### Checkpoint 3 — Injection Object
+\`\`\`java
+Mobil m = new Mobil();
+m.setMerk("Avanza");
+m.setBiaya(350000);
+
+Sopir s = new Sopir();
+s.setNama("John Doe");
+s.setBiaya(200000);
+
+Pelanggan p = new Pelanggan();
+p.setMobil(m);
+p.setSopir(s);
+p.setHari(2);
+
+System.out.println("Biaya Total = "
+    + p.hitungBiayaTotal());
+System.out.println(p.getMobil().getMerk());
+\`\`\`
+
+## Percobaan 3 — Aggregation Dua Role
+
+### Checkpoint 1 — Atribut Masinis dan Asisten
+\`\`\`java
+private String nama, kelas;
+private Pegawai masinis, asisten;
+
+public KeretaApi(
+    String nama,
+    String kelas,
+    Pegawai masinis,
+    Pegawai asisten
+) {
+    this.nama = nama;
+    this.kelas = kelas;
+    this.masinis = masinis;
+    this.asisten = asisten;
+}
+\`\`\`
+
+### Checkpoint 2 — Guard Clause Asisten
+\`\`\`java
+public String info() {
+    String info = "";
+    info += "Nama: " + this.nama + "\n";
+    info += "Kelas: " + this.kelas + "\n";
+    info += "Masinis: "
+         + this.masinis.info() + "\n";
+
+    if (this.asisten != null)
+        info += "Asisten: "
+             + this.asisten.info() + "\n";
+
+    return info;
+}
+\`\`\`
+
+### Checkpoint 3 — Dua Object Pegawai
+\`\`\`java
+Pegawai masinis =
+    new Pegawai("1234", "Spongebob Squarepants");
+
+Pegawai asisten =
+    new Pegawai("4567", "Patrick Star");
+
+KeretaApi keretaApi =
+    new KeretaApi(
+        "Gaya Baru",
+        "Bisnis",
+        masinis,
+        asisten
+    );
+
+System.out.println(keretaApi.info());
+\`\`\`
+
+### Checkpoint 4 — Constructor Tanpa Asisten
+\`\`\`java
+Pegawai masinis =
+    new Pegawai("1234", "Spongebob Squarepants");
+
+KeretaApi keretaApi =
+    new KeretaApi("Gaya Baru", "Bisnis", masinis);
+
+System.out.println(keretaApi.info());
+\`\`\`
+
+## Percobaan 4 — Array of Object dan Multiplicity
+
+### Checkpoint 1 — Membuat Array Kursi
+\`\`\`java
+private String kode;
+private Kursi[] arrayKursi;
+
+public Gerbong(String kode, int jumlah) {
+    this.kode = kode;
+    this.arrayKursi = new Kursi[jumlah];
+    this.initKursi();
+}
+\`\`\`
+
+### Checkpoint 2 — Composition Gerbong ke Kursi
+\`\`\`java
+private void initKursi() {
+    for (int i = 0; i < arrayKursi.length; i++)
+        this.arrayKursi[i] =
+            new Kursi(String.valueOf(i + 1));
+}
+\`\`\`
+
+### Checkpoint 3 — Aggregation Kursi ke Penumpang
+\`\`\`java
+private Penumpang penumpang;
+
+public void setPenumpang(Penumpang penumpang) {
+    this.penumpang = penumpang;
+}
+
+public Penumpang getPenumpang() {
+    return penumpang;
+}
+\`\`\`
+
+### Checkpoint 4 — Pengecekan Null
+\`\`\`java
+public String info() {
+    String info = "";
+    info += "Nomor: " + nomor + "\n";
+
+    if (this.penumpang != null)
+        info += "Penumpang: "
+             + penumpang.info() + "\n";
+
+    return info;
+}
+\`\`\`
+
+### Checkpoint 5 — Pemetaan Nomor Kursi ke Index Array
+\`\`\`java
+public void setPenumpang(
+    Penumpang penumpang,
+    int nomor
+) {
+    this.arrayKursi[nomor - 1]
+        .setPenumpang(penumpang);
+}
+\`\`\`
+
+### Checkpoint 6 — Instansiasi
+\`\`\`java
+Penumpang p =
+    new Penumpang("12345", "Mr. Krab");
+
+Gerbong gerbong =
+    new Gerbong("A", 10);
+
+gerbong.setPenumpang(p, 1);
+
+System.out.println(gerbong.info());
+\`\`\`
+
+## Percobaan 5 — Composition
+
+### Checkpoint 1 — Mobil Membuat Mesin
+\`\`\`java
+private String merek;
+private Mesin mesin;
+
+public Mobil(String merek) {
+    this.merek = merek;
+    this.mesin = new Mesin();
+}
+\`\`\`
+
+### Checkpoint 2 — Inisialisasi Mesin
+\`\`\`java
+private String tipe;
+
+public Mesin() {
+    this.tipe = "4-silinder";
+}
+
+public String getTipe() {
+    return tipe;
+}
+\`\`\`
+
+### Checkpoint 3 — Instansiasi
+\`\`\`java
+Mobil mobil = new Mobil("Avanza");
+mobil.tampilkanInfo();
+\`\`\`
+
+## Percobaan 6 — Dependency / Uses-A
+
+### Checkpoint 1 — Dependency melalui Parameter
+\`\`\`java
+public void cetakDokumen(
+    Printer printer,
+    String namaFile
+) {
+    System.out.println(
+        merk + " mengirim dokumen ke printer..."
+    );
+    printer.cetak(namaFile);
+}
+\`\`\`
+
+### Checkpoint 2 — Method Printer
+\`\`\`java
+public void cetak(String namaFile) {
+    System.out.println(
+        "[" + merk + "] Mencetak "
+        + namaFile + "..."
+    );
+    System.out.println(
+        "[" + merk + "] Selesai."
+    );
+}
+\`\`\`
+
+### Checkpoint 3 — Object Printer Digunakan oleh Laptop
+\`\`\`java
+Laptop laptop = new Laptop("Thinkpad");
+Printer printer = new Printer("Epson L3110");
+
+laptop.cetakDokumen(
+    printer,
+    "Laporan.pdf"
+);
+\`\`\`
+
+# Tugas Mandiri — Sistem Perpustakaan
+
+### Checkpoint 1 — Buku
+\`\`\`java
+private String judul;
+
+public Buku(String judul) {
+    this.judul = judul;
+}
+
+public String getJudul() {
+    return judul;
+}
+\`\`\`
+
+### Checkpoint 2 — Rak
+\`\`\`java
+private String kode;
+
+public Rak(String kode) {
+    this.kode = kode;
+}
+
+public String getKode() {
+    return kode;
+}
+\`\`\`
+
+### Checkpoint 3 — Anggota
+\`\`\`java
+private String nama;
+
+public Anggota(String nama) {
+    this.nama = nama;
+}
+
+public String getNama() {
+    return nama;
+}
+\`\`\`
+
+### Checkpoint 4 — Aggregation dan Composition
+\`\`\`java
+private Buku buku; // Aggregation
+private Rak rak;   // Composition
+
+public Perpustakaan(Buku buku) {
+    this.buku = buku;
+    this.rak = new Rak("RAK-01");
+}
+\`\`\`
+
+### Checkpoint 5 — Dependency
+\`\`\`java
+public void pinjam(Anggota anggota) {
+    System.out.println(
+        "Peminjaman oleh: "
+        + anggota.getNama()
+    );
+    System.out.println(
+        "Buku: " + buku.getJudul()
+    );
+}
+\`\`\`
+
+### Checkpoint 6 — Instansiasi Tugas Mandiri
+\`\`\`java
+Buku buku =
+    new Buku("Pemrograman Berbasis Objek");
+
+Anggota anggota =
+    new Anggota("Budi");
+
+Perpustakaan perpustakaan =
+    new Perpustakaan(buku);
+
+perpustakaan.info();
+perpustakaan.pinjam(anggota);
+\`\`\`
