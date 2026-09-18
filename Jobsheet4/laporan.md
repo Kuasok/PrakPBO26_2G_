@@ -1,8 +1,8 @@
 # LAPORAN JOBSHEET 4 — RELASI KELAS
 
 ## Identitas
-- Nama : ______________________________
-- NIM : _______________________________
+- Nama : Muhammad Ferdi Afiyanto
+- NIM : 254107020122
 - Kelas : 2G
 - Mata Kuliah : Praktikum Pemrograman Berbasis Objek
 - Pertemuan : 4
