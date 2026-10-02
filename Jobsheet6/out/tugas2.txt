@@ -1,0 +1,5 @@
+Channel aktif: 1
+Channel aktif sekarang: 20
+Sedang memainkan DVD: kosong
+Sedang memainkan DVD: The Matrix
+Channel aktif setelah pindahChannel(150): 20

@@ -1,0 +1,21 @@
+Begin game...
+Nama   : Esther
+Level  : 10
+Health : 100
+Nama   : Jackal
+Level  : 13
+Health : 100
+Nama   : Quistis
+Level  : 20
+Health : 100
+Jackal special attack to quistis, quistis cast magic to jackal,
+esther cure jackal, quistis attack esther...
+Nama   : Esther
+Level  : 10
+Health : 90
+Nama   : Jackal
+Level  : 13
+Health : 100
+Nama   : Quistis
+Level  : 20
+Health : 83

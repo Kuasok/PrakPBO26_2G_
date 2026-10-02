@@ -1,0 +1,11 @@
+Merk            : Dell
+Kapasitas Memory: 2048 MB
+Kecepatan CPU   : 3500 MHz
+Printer         : Canon
+
+Merk            : Asus
+Kapasitas Memory: 4096 MB
+Kecepatan CPU   : 2500 MHz
+Resolusi Layar  : 720p
+
+Komputer Dell dinyalakan

@@ -1,0 +1,5 @@
+Merk            : HP
+Kapasitas Memory: 8192 MB
+Kecepatan CPU   : 4200 MHz
+Printer         : Epson
+GPU             : RTX 4090
