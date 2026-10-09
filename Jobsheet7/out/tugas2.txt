@@ -1,0 +1,10 @@
+== Pemanggilan lewat referensi Manusia ==
+Manusia makan nasi
+Dosen makan di kantin kampus
+Mahasiswa makan di kantin kampus
+== Perilaku yang diwarisi tetap dapat dipakai ==
+Manusia bernafas menggunakan paru-paru
+Manusia bernafas menggunakan paru-paru
+== Method khas subclass (butuh downcast) ==
+Dosen lembur mengoreksi tugas mahasiswa
+Mahasiswa tidur di kos

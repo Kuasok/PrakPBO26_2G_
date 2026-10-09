@@ -1,0 +1,6 @@
+== Overloading totalSudut ==
+totalSudut(60)       : 120
+totalSudut(90, 45)   : 45
+== Overloading keliling ==
+keliling(3, 4, 5)    : 12
+keliling(3, 4)       : 12.00

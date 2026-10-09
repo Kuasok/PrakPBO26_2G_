@@ -1,0 +1,49 @@
+Program Testing Class Manager & Staff
+Manager :Administrasi
+NIP :101
+Nama :Tedjo
+Golongan :1
+Tunjangan :5000000
+Gaji :10000000
+Bagian :Administrasi
+-------------------
+NIP :0003
+Nama :Usman
+Golongan :2
+Jml Lembur :10
+Gaji Lembur :10000
+Gaji :3100000
+NIP :0005
+Nama :Anugrah
+Golongan :2
+Jml Lembur :10
+Gaji Lembur :55000
+Gaji :3550000
+-------------------
+Manager :Pemasaran
+NIP :102
+Nama :Atika
+Golongan :1
+Tunjangan :2500000
+Gaji :7500000
+Bagian :Pemasaran
+-------------------
+NIP :0004
+Nama :Hendra
+Golongan :3
+Jml Lembur :15
+Gaji Lembur :5500
+Gaji :2082500
+NIP :0006
+Nama :Arie
+Golongan :4
+Jml Lembur :5
+Gaji Lembur :100000
+Gaji :1500000
+NIP :0007
+Nama :Mentari
+Golongan :3
+Jml Lembur :6
+Gaji Lembur :20000
+Gaji :2120000
+-------------------
