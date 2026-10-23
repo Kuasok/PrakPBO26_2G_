@@ -1,0 +1,19 @@
+Total payment = 500
+kWH = 5
+Category = R-1 (100 per kWH)
+
+------------------------------
+Total payment = 525
+Name = Dedik
+Registered as permanent employee with salary 500
+
+------------------------------
+Name = Dedik
+Registered as permanent employee with salary 500
+
+You have to pay her/him monthly!!!
+------------------------------
+Name = Sunarto
+Registered as internship employee for 5 month/s
+
+No need to pay him/her :)

@@ -1,0 +1,4 @@
+e menunjuk objek PermanentEmployee
+e menunjuk objek InternshipEmployee
+p menunjuk objek PermanentEmployee
+p menunjuk objek ElectricityBill

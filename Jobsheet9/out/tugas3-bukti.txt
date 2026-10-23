@@ -1,0 +1,4 @@
+1. Zombie z = new WalkingZombie(100, 1); -> OK (WalkingZombie)
+2. Destroyable d = z; -> OK (WalkingZombie)
+4. Zombie z3 = (Zombie) d; -> OK (WalkingZombie)
+7. WalkingZombie w = (WalkingZombie) z5; -> java.lang.ClassCastException: class id.ac.polinema.polimorfisme.zombie.JumpingZombie cannot be cast to class id.ac.polinema.polimorfisme.zombie.WalkingZombie (id.ac.polinema.polimorfisme.zombie.JumpingZombie and id.ac.polinema.polimorfisme.zombie.WalkingZombie are in unnamed module of loader 'app')

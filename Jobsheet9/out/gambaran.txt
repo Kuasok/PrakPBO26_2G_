@@ -1,0 +1,3 @@
+a     menunjuk objek Deer
+a2 menunjuk objek Lion
+v     menunjuk objek Deer

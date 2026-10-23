@@ -1,0 +1,7 @@
+Name = Dedik
+Registered as permanent employee with salary 500
+
+Name = Sunarto
+Registered as internship employee for 5 month/s
+
+Total tagihan bulan ini = 1025

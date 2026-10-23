@@ -1,0 +1,21 @@
+Walking Zombie Data = 
+Health = 100
+Level = 1
+
+Jumping Zombie Data = 
+Health = 100
+Level = 2
+
+Barrier Strength = 100
+
+----------------------
+Walking Zombie Data = 
+Health = 42
+Level = 1
+
+Jumping Zombie Data = 
+Health = 66
+Level = 2
+
+Barrier Strength = 64
+

@@ -1,0 +1,63 @@
+PESAN ERROR - Jobsheet 9 Polimorfisme
+Dikompilasi dan dijalankan dengan OpenJDK 27 (javac 27).
+
+########## Percobaan 1 - Langkah 4: aktifkan Vegetarian v2 = l; ##########
+src/id/ac/polinema/polimorfisme/gambaran/GambaranDasar.java:16: error: incompatible types: Lion cannot be converted to Vegetarian
+        Vegetarian v2 = l;   // tidak valid: Lion tidak implements Vegetarian
+                        ^
+1 error
+
+########## Percobaan 1 - Langkah 10: tambahkan p = iEmp; dan e = eBill; ##########
+src/id/ac/polinema/polimorfisme/pegawai/MainPercobaan1.java:20: error: incompatible types: InternshipEmployee cannot be converted to Payable
+        p = iEmp;
+            ^
+src/id/ac/polinema/polimorfisme/pegawai/MainPercobaan1.java:21: error: incompatible types: ElectricityBill cannot be converted to Employee
+        e = eBill;
+            ^
+2 errors
+
+########## Percobaan 2 - Langkah 4: panggil e.getSalary() pada e bertipe Employee ##########
+src/id/ac/polinema/polimorfisme/pegawai/MainPercobaan2.java:14: error: cannot find symbol
+        System.out.println(e.getSalary());
+                            ^
+  symbol:   method getSalary()
+  location: variable e of type Employee
+1 error
+
+########## Percobaan 3 - Langkah 3: aktifkan Employee[] e2 = {pEmp, iEmp, eBill}; ##########
+src/id/ac/polinema/polimorfisme/pegawai/MainPercobaan3.java:11: error: incompatible types: ElectricityBill cannot be converted to Employee
+        Employee[] e2 = {pEmp, iEmp, eBill};             // tidak valid
+                                     ^
+1 error
+
+########## Percobaan 4 - Langkah 4: tambahkan ow.pay(iEmp); di akhir main ##########
+src/id/ac/polinema/polimorfisme/pegawai/MainPercobaan4.java:20: error: incompatible types: InternshipEmployee cannot be converted to Payable
+        ow.pay(iEmp);
+               ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error
+
+########## Tugas 3 - nomor 3, 5, dan 6: error kompilasi ##########
+src/id/ac/polinema/polimorfisme/zombie/Tugas3ErrorKompilasi.java:8: error: incompatible types: Destroyable cannot be converted to Zombie
+        Zombie z2 = d;
+                    ^
+src/id/ac/polinema/polimorfisme/zombie/Tugas3ErrorKompilasi.java:9: error: Zombie is abstract; cannot be instantiated
+        Zombie z4 = new Zombie(100, 1);
+                    ^
+src/id/ac/polinema/polimorfisme/zombie/Tugas3ErrorKompilasi.java:10: error: incompatible types: Plant cannot be converted to Destroyable
+        Destroyable d2 = new Plant();
+                         ^
+3 errors
+
+########## Percobaan 4 - Langkah 4: Eksperimen4 dijalankan ##########
+Sebelum casting
+Exception in thread "main" java.lang.ClassCastException: class id.ac.polinema.polimorfisme.pegawai.InternshipEmployee cannot be cast to class id.ac.polinema.polimorfisme.pegawai.PermanentEmployee (id.ac.polinema.polimorfisme.pegawai.InternshipEmployee and id.ac.polinema.polimorfisme.pegawai.PermanentEmployee are in unnamed module of loader 'app')
+	at id.ac.polinema.polimorfisme.pegawai.Eksperimen4.main(Eksperimen4.java:12)
+
+########## Tugas 3 - nomor 7: (WalkingZombie) z5 dijalankan tanpa instanceof ##########
+Exception in thread "main" java.lang.ClassCastException: class id.ac.polinema.polimorfisme.zombie.JumpingZombie cannot be cast to class id.ac.polinema.polimorfisme.zombie.WalkingZombie (id.ac.polinema.polimorfisme.zombie.JumpingZombie and id.ac.polinema.polimorfisme.zombie.WalkingZombie are in unnamed module of loader 'app')
+	at id.ac.polinema.polimorfisme.zombie.Tugas3Runtime.main(Tugas3Runtime.java:6)
+
+########## Tugas 2(c) - cast Barrier ke Zombie tanpa instanceof ##########
+Exception in thread "main" java.lang.ClassCastException: class id.ac.polinema.polimorfisme.zombie.Barrier cannot be cast to class id.ac.polinema.polimorfisme.zombie.Zombie (id.ac.polinema.polimorfisme.zombie.Barrier and id.ac.polinema.polimorfisme.zombie.Zombie are in unnamed module of loader 'app')
+	at id.ac.polinema.polimorfisme.zombie.Tugas2TanpaInstanceof.main(Tugas2TanpaInstanceof.java:6)
