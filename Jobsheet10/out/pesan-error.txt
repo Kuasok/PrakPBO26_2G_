@@ -1,0 +1,75 @@
+PESAN ERROR - Jobsheet 10 Abstract Class dan Interface
+Dikompilasi dan dijalankan dengan OpenJDK 27 (javac 27).
+Setiap eksperimen dijalankan pada salinan source terpisah, lalu source dikembalikan seperti semula.
+
+########## Percobaan 1 Pertanyaan 2: tambah Hewan hewan = new Hewan(); di main ##########
+src/id/ac/polinema/abstrakinterface/abstractclass/Program.java:5: error: Hewan is abstract; cannot be instantiated
+        Hewan hewan = new Hewan();
+                      ^
+1 error
+
+########## Percobaan 1 Pertanyaan 3: method bergerak() dihapus dari class Ikan ##########
+src/id/ac/polinema/abstrakinterface/abstractclass/Ikan.java:3: error: Ikan is not abstract and does not override abstract method bergerak() in Hewan
+public class Ikan extends Hewan {}
+       ^
+1 error
+
+########## Percobaan 1 Pertanyaan 4: abstract method bernapas() di class Ikan (non-abstract) ##########
+src/id/ac/polinema/abstrakinterface/abstractclass/Ikan.java:3: error: Ikan is not abstract and does not override abstract method bernapas() in Ikan
+public class Ikan extends Hewan {
+       ^
+1 error
+
+########## Percobaan 2 Langkah 6: pakRektor.beriSertifikatCumlaude(mhsBiasa); ##########
+src/id/ac/polinema/abstrakinterface/interfacelatihan/Program.java:11: error: incompatible types: Mahasiswa cannot be converted to ICumlaude
+        pakRektor.beriSertifikatCumlaude(mhsBiasa);
+                                         ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error
+
+########## Percobaan 2 Pertanyaan 4: kata kunci public dihapus dari lulus() di class Sarjana ##########
+src/id/ac/polinema/abstrakinterface/interfacelatihan/Sarjana.java:9: error: lulus() in Sarjana cannot implement lulus() in ICumlaude
+    void lulus() {
+         ^
+  attempting to assign weaker access privileges; was public
+1 error
+
+########## Percobaan 3 Pertanyaan 1: modifier protected dan private pada method interface IBerprestasi ##########
+src/id/ac/polinema/abstrakinterface/interfacelatihan/IBerprestasi.java:4: error: modifier protected not allowed here
+    protected abstract void menjuaraiKompetisi();
+                            ^
+src/id/ac/polinema/abstrakinterface/interfacelatihan/IBerprestasi.java:6: error: illegal combination of modifiers: abstract and private
+    private abstract void membuatPublikasiIlmiah();
+                          ^
+src/id/ac/polinema/abstrakinterface/interfacelatihan/Rektor.java:19: error: membuatPublikasiIlmiah() has private access in IBerprestasi
+        mahasiswaBerprestasi.membuatPublikasiIlmiah();
+                            ^
+src/id/ac/polinema/abstrakinterface/interfacelatihan/PascaSarjana.java:23: error: membuatPublikasiIlmiah() in PascaSarjana does not override or implement a method from a supertype
+    @Override
+    ^
+src/id/ac/polinema/abstrakinterface/interfacelatihan/Sarjana.java:23: error: membuatPublikasiIlmiah() in Sarjana does not override or implement a method from a supertype
+    @Override
+    ^
+5 errors
+
+########## Percobaan 3 Pertanyaan 2: IBerprestasi prestasi = new IBerprestasi(); ##########
+src/id/ac/polinema/abstrakinterface/interfacelatihan/ProgramMawapres.java:13: error: IBerprestasi is abstract; cannot be instantiated
+        IBerprestasi prestasi = new IBerprestasi();
+                                ^
+1 error
+
+########## Percobaan 3 Langkah 4: Sarjana belum implements IBerprestasi, dipanggil beriSertifikatMawapres(sarjanaCumlaude) ##########
+src/id/ac/polinema/abstrakinterface/interfacelatihan/ProgramMawapres.java:13: error: incompatible types: Sarjana cannot be converted to IBerprestasi
+        pakRektor.beriSertifikatMawapres(sarjanaCumlaude);
+                                         ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+1 error
+
+########## Percobaan 3 Langkah 5: pemanggilan untuk sarjanaCumlaude dikomentari (output sementara) ##########
+
+--- output sementara (hanya masterCumlaude) ---
+Saya REKTOR, memberikan sertifikat MAWAPRES.
+Selamat! Bagaimana Anda bisa berprestasi?
+Saya telah menjuarai kompetisi INTERNASIONAL
+Saya menerbitkan artikel di jurnal INTERNASIONAL
+----------------------------------------

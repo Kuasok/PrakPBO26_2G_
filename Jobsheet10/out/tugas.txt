@@ -1,0 +1,20 @@
+Jenis: Herbivora
+Makanan: Tumbuhan
+Nama: Keledai
+Jumlah Kaki: 4
+Suara: Hehehehe
+Warna Bulu: Abu-Abu
+
+Jenis: Karnivora + Herbivora
+Makanan: Daging + Tumbuhan
+Nama: Gulali
+Jumlah Kaki: 4
+Suara: Haaum Hauum
+Warna Bulu: Hitam Manis
+
+Jenis: Karnivora
+Makanan: Daging
+Nama: CingaCing
+Jumlah Kaki: 4
+Suara: Roaar Roaaar
+Warna Bulu: Coklat
